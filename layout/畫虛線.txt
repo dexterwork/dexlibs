@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="line">
+    <!-- 顯示一條虛線，破折線的寬度=dashWith，破折線之間的空隙的寬度=dashGap，當dashGap=0dp?，為實線 -->
+    <stroke android:width="1dp" android:color="#D5D5D5"
+        android:dashWidth="2dp" android:dashGap="3dp" />
+    <!-- 虛線的高度 -->
+    <size android:height="2dp" />
+</shape>

@@ -1,0 +1,94 @@
+ private void pickerTakeArea() {
+        takeAreaObjects = new TakeAreaObject[3];
+        for(int i=0;i<takeAreaObjects.length;i++){
+            takeAreaObjects[i]=new TakeAreaObject();
+            takeAreaObjects[i].setId(String.valueOf(i));
+        }
+        takeAreaObjects[0].setName("台北松山區");
+        takeAreaObjects[1].setName("台北大安區");
+        takeAreaObjects[2].setName("台北北投區");
+
+        LayoutInflater inflater = (LayoutInflater) this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.custom_popup, null);
+        final PopupWindow popup = new PopupWindow(view, RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT, true);
+        popup.setBackgroundDrawable(new BitmapDrawable());
+        listviewPopUp = (ListView) view.findViewById(R.id.popuplist);
+
+        popup.showAsDropDown(btnTakeArea, 0, 1);
+        listviewPopUp.setAdapter(new TakeAreaAdapter(
+                RecipientInformation.this, R.layout.spinnerrow));
+
+        listviewPopUp.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                btnTakeArea.setText(takeAreaObjects[position].getName());
+                popup.dismiss();
+            }
+        });
+
+    }
+
+
+public class TakeAreaAdapter extends ArrayAdapter<TakeAreaObject> {
+        public TakeAreaAdapter(Context context, int resource) {
+            super(context, resource, takeAreaObjects);
+        }
+
+        @Override
+        public View getView(int pos, View cnvtView, ViewGroup prnt) {
+            return getCustomView(pos, cnvtView, prnt);
+        }
+
+        public View getCustomView(int position, View convertView,
+                                  ViewGroup parent) {
+            LayoutInflater inflater = getLayoutInflater();
+            View mySpinner = inflater.inflate(R.layout.spinnerrow, parent,
+                    false);
+            TextView text_spinner_item = (TextView) mySpinner
+                    .findViewById(R.id.textItemName);
+            text_spinner_item.setText(takeAreaObjects[position].getName());
+            return mySpinner;
+        }
+    }
+
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#E7E3E0"
+    android:orientation="vertical" >
+
+    <ListView
+        android:id="@+id/popuplist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_alignParentTop="true" >
+
+    </ListView>
+          
+</RelativeLayout>
+
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/edittextbacksquare"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textItemName"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:gravity="left"
+        android:padding="10dp"
+        android:text="text"
+        android:textSize="15dp" />
+</LinearLayout>
