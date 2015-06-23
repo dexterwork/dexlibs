@@ -1,0 +1,12 @@
+ webView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+//                MLog.i(this, "dex A string:" + url);
+                if (url.contains("Status=SUCCESS")) {
+                    MLog.i(this, "dex Status=SUCCESS: " + url);
+                   
+                }
+                return super.shouldInterceptRequest(view, url);
+            }
+        });
