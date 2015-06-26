@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#303080"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="#303030"
+        android:layout_height="60dp">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:textColor="#fff"
+            android:text="oxoxoox"
+            android:layout_centerInParent="true"
+            android:textSize="30sp"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"></LinearLayout>
+
+
+    <ScrollView
+        android:id="@+id/subScrollView"
+        android:layout_width="match_parent"
+        android:background="#808030"
+        android:fillViewport="true"
+        android:layout_height="200dp">
+
+        <ListView
+            android:id="@+id/subListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
+
+
+    </ScrollView>
+
+
+</LinearLayout>
