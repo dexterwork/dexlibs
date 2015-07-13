@@ -1,14 +1,17 @@
 package com.awant.lion.tools;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 /**
  * Created by dexter on 2015/6/17.
  */
 public class Tools {
 
     public static String strLen(String str, int len) {
-        while (str.length() < len) {
-            str = "0" + str;
-        }
+        while (str.length() < len) str = "0" + str;
         return str;
     }
 
@@ -20,5 +23,28 @@ public class Tools {
         float tempFloat = Float.valueOf(strFloat);
         int tempInt = (int) tempFloat;
         return String.valueOf(tempInt);
+    }
+
+    public static String getStringFromInputStream(InputStream is) {
+        BufferedReader br = null;
+        StringBuilder sb = new StringBuilder();
+        String line;
+        try {
+            br = new BufferedReader(new InputStreamReader(is));
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return sb.toString();
     }
 }
