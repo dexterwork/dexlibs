@@ -50,5 +50,25 @@ public class MLog {
         if (SHOW_LOG) Log.e(tag, msg);
     }
 
+    public static void v(Class<?> cls, String msg) {
+        if (SHOW_LOG) Log.v(cls.getSimpleName(), msg);
+    }
+
+    public static void d(Class<?> cls, String msg) {
+        if (SHOW_LOG) Log.d(cls.getSimpleName(), msg);
+    }
+
+    public static void i(Class<?> cls, String msg) {
+        if (SHOW_LOG) Log.i(cls.getSimpleName(), msg);
+    }
+
+    public static void w(Class<?> cls, String msg) {
+        if (SHOW_LOG) Log.w(cls.getSimpleName(), msg);
+    }
+
+    public static void e(Class<?> cls, String msg) {
+        if (SHOW_LOG) Log.e(cls.getSimpleName(), msg);
+    }
+
 
 }
