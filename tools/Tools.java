@@ -47,4 +47,9 @@ public class Tools {
         }
         return sb.toString();
     }
+
+    public static String DoubleToInteger(String str) {
+        double d = Double.valueOf(str);
+        return String.valueOf( (int) d);
+    }
 }

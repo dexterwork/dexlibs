@@ -31,7 +31,7 @@ public class HttpGetPost extends AsyncTask<Void, Void, Object> {
     HttpGet httpGet = null;
     HttpPost httpPost = null;
 
-    enum HttpType {GET, POST}
+    public enum HttpType {GET, POST}
 
     public HttpGetPost(String url, Class<?> bundleClass, HttpType httpType) {
         this.url = url;
