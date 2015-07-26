@@ -15,6 +15,7 @@ import studio.dexter.tools.MLog;
  * Created by Dexter on 2015/7/25.
  */
 public class SqlParser {
+    private final boolean SHOW_CREATE_LOG = false;
 
     /**
      * @param context
@@ -32,13 +33,8 @@ public class SqlParser {
 
 
     private TreeMap<String, String> parserFileFromAssets(Context context, String filename) {
-//        file format:
-//        xxx,xxx
-//        xxx, xxx
-//        ...
         TreeMap<String, String> map = new TreeMap<String, String>();
         InputStream input = null;
-        boolean showLog = true;
         try {
             input = context.getAssets().open(filename);
             byte[] buffer = new byte[input.available()];
@@ -62,10 +58,13 @@ public class SqlParser {
 
             map = addReservedFields(map);
 
-            if (showLog)
+            if (SHOW_CREATE_LOG) {
+                String strLog = "";
                 for (String str : map.keySet()) {
-                    MLog.i(BasicSql.class, str + ":" + map.get(str));
+                    strLog += str + ":" + map.get(str) + "\n";
                 }
+                MLog.i(BasicSql.class, strLog);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -96,8 +95,6 @@ public class SqlParser {
 
 
     /**
-     * \
-     *
      * @param tableMap
      * @return database execute create table command string.
      */
