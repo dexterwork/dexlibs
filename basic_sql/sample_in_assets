@@ -1,0 +1,13 @@
+db, ohMoney.db
+ table, category_list
+ category, text
+ user_id,text
+ parent_category,text
+ enforcement,Boolean
+ color,text
+ time_unit, text
+ quota, text
+ update_date,text
+ update_time,text
+ image,text
+ empty, 5  //保留 5 個空白欄位, 若定義 field, xxx, 可定義保留欄位名稱(一定要有empty)
