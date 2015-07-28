@@ -1,16 +1,14 @@
-package studio.dexter.tools;
+package studio.dex.test;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;
 import android.text.TextUtils;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,44 +17,37 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
-import studio.dexter.exception_party.ExceptionLog;
 
 /**
  * Created by Dexter on 2015/7/27.
  */
 public class FileTools {
-    public FileTools() {
-        SDCARD_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/";//擷取手機的/sdcard路徑並給定檔案名稱
-    }
-
-
     //    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    private final String SDCARD_PATH;
+    public FileTools() {
+    }
+
 
     public String getCurrentTimeString() {
         return CalendarTools.getStrTime();
     }
 
     public String getSDcardPath() {
-        return SDCARD_PATH;
+        return Environment.getExternalStorageDirectory().getAbsolutePath().toString() + "/";
     }
-
-    //TODO add append write methods (NOT over write).
-
 
 
     /**
-     * write (OVER WRITE) string to SDcard, DEFAULT file name:"log_times.txt"
+     * write string to SDcard, DEFAULT file name:"log_times.txt"
      *
      * @param message
      * @param fileName
      */
-    public void writeStringToFileInSDcard(String message, String fileName) {
+    public void writeStringToFileInSDcard(String fileName, String message, boolean append) {
         if (TextUtils.isEmpty(fileName))
             fileName = "log_" + getCurrentTimeString() + ".txt";
         try {
-            FileOutputStream output = new FileOutputStream(SDCARD_PATH + fileName);
+            FileOutputStream output = new FileOutputStream(getSDcardPath() + fileName, append);
             output.write(message.getBytes());  //write()寫入字串，並將字串以byte形式儲存。
             output.close();
         } catch (Exception e) {
@@ -65,12 +56,12 @@ public class FileTools {
     }
 
     /**
-     * write (OVER WRITE) strings Map<String, String> to SDcard, default file name:"log_times.txt"
+     * write strings Map<String, String> to SDcard, default file name:"log_times.txt"
      *
      * @param map
      * @param fileName
      */
-    public void writeStringToFileInSDcard(Map<String, String> map, String fileName) {
+    public void writeStringToFileInSDcard(String fileName, Map<String, String> map, boolean append) {
         String str = "";
         Iterator it = map.keySet().iterator();
         String key = "";
@@ -79,37 +70,37 @@ public class FileTools {
             str += key + "=" + map.get(key);
             if (it.hasNext()) str += "\n";
         }
-        writeStringToFileInSDcard(str, fileName);
+        writeStringToFileInSDcard(fileName, str, append);
     }
 
     /**
-     * write (OVER WRITE) strings ArrayList<String> to SDcard, default file name:"log_times.txt"
+     * write strings ArrayList<String> to SDcard, default file name:"log_times.txt"
      *
      * @param stringArray
      * @param filename
      */
-    public void writeStringToFileInSDcard(ArrayList<String> stringArray, String filename) {
+    public void writeStringToFileInSDcard(String filename, ArrayList<String> stringArray, boolean append) {
         String str = "";
         Iterator it = stringArray.iterator();
         while (it.hasNext()) {
             str += it.next();
             if (it.hasNext()) str += "\n";
         }
-        writeStringToFileInSDcard(str, filename);
+        writeStringToFileInSDcard(filename, str, append);
     }
 
     /**
      * read string from project private file folder.
      * PATH=/data/data/project_path/files/filename
      *
-     * @param activity
+     * @param context
      * @param filename
      * @return
      */
-    public String readStringFromFileInProject(Activity activity, String filename) {
+    public String readStringFromFileInProject(Context context, String filename) {
         InputStream inputStream = null;
         try {
-            inputStream = activity.openFileInput(filename);
+            inputStream = context.openFileInput(filename);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return null;
@@ -134,16 +125,16 @@ public class FileTools {
 
 
     /**
-     * write (OVER WRITE) string to project private file folder.
+     * write string to project private file folder.
      * PATH=/data/data/project_path/files/filename
      *
-     * @param activity
+     * @param context
      * @param filename
      * @param writeString
      */
-    public void writeStringToFileInProject(Activity activity, String filename, String writeString) {
+    public void writeStringToFileInProject(Context context, String filename, String writeString, boolean append) {
         try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(activity.openFileOutput(filename, Context.MODE_PRIVATE));
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(filename, append ? Context.MODE_APPEND : Context.MODE_PRIVATE));
             outputStreamWriter.write(writeString);
             outputStreamWriter.close();
         } catch (IOException e) {
@@ -152,10 +143,33 @@ public class FileTools {
     }
 
     //TODO
-    public String readStringFromFileInSDcard(Activity activity, String filename) {
-        return null;
-    }
+    public String readStringFromFileInSDcard(String filename) {
+        BufferedReader buffer = null;
+        String read = "";
+        try {
+            File file = new File(getSDcardPath() + filename);
+            FileInputStream input = new FileInputStream(file);
+            buffer = new BufferedReader(new InputStreamReader(input));
 
+            String row = null;
+            while ((row = buffer.readLine()) != null) {
+                read += row + "\n";
+                row = null;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (buffer != null) try {
+                buffer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return read;
+    }
 
 
 }
