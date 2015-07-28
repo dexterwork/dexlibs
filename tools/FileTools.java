@@ -1,4 +1,4 @@
-package studio.dex.test;
+package studio.dexter.test;
 
 import android.content.Context;
 import android.os.Environment;
@@ -47,9 +47,14 @@ public class FileTools {
         if (TextUtils.isEmpty(fileName))
             fileName = "log_" + getCurrentTimeString() + ".txt";
         try {
-            FileOutputStream output = new FileOutputStream(getSDcardPath() + fileName, append);
+            File file = new File(getSDcardPath() + fileName);
+            file.createNewFile();
+            FileOutputStream output = new FileOutputStream(file, append);
             output.write(message.getBytes());  //write()寫入字串，並將字串以byte形式儲存。
+            output.flush();
             output.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -136,21 +141,27 @@ public class FileTools {
         try {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(filename, append ? Context.MODE_APPEND : Context.MODE_PRIVATE));
             outputStreamWriter.write(writeString);
+            outputStreamWriter.flush();
             outputStreamWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    //TODO
+    /**
+     * read file from SD card.
+     * @param filename
+     * @return
+     */
     public String readStringFromFileInSDcard(String filename) {
-        BufferedReader buffer = null;
+        if (TextUtils.isEmpty(filename)) return null;
         String read = "";
+        BufferedReader buffer = null;
         try {
             File file = new File(getSDcardPath() + filename);
+            if (!file.exists()) return null;
             FileInputStream input = new FileInputStream(file);
             buffer = new BufferedReader(new InputStreamReader(input));
-
             String row = null;
             while ((row = buffer.readLine()) != null) {
                 read += row + "\n";
