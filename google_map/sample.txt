@@ -1,0 +1,40 @@
+ mapFragment = (MapFragment) getFragmentManager()
+                .findFragmentById(R.id.map);
+        if (SHOW_MAP_ROUTER) {//規劃路線模式
+            MLocation mLocation = new MLocation(RecipientInformation2.this);
+            HashMap<String, Double> loc = mLocation.getLocation();
+            Bundle bundle = new Bundle();
+            bundle.putString("storeName", title);
+            bundle.putString("storeAddr", addr);
+            bundle.putDouble("fromLat", loc.get(MLocation.KEY_LATITUDE));
+            bundle.putDouble("fromLng", loc.get(MLocation.KEY_LONGITUDE));
+
+            MapRouterDialog mapDialog = new MapRouterDialog(RecipientInformation2.this, bundle, mapFragment.getMap());
+
+
+        } else {//顯示單一地點模式
+            Geocoder geo = new Geocoder(getApplication(), Locale.TRADITIONAL_CHINESE);
+            List<Address> addrList = null;
+            try {
+                MLog.i(this, "dex map addr=" + addr);
+                addrList = geo.getFromLocationName(addr, 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            LatLng end = new LatLng(addrList.get(0).getLatitude(), addrList.get(0).getLongitude());
+            mGoogleMap = mapFragment.getMap();
+            mGoogleMap.clear();
+            points = new ArrayList<Marker>();
+            Marker endMarker = marker(end, title, addr);
+//        endMarker.showInfoWindow();//always show information.
+            points.add(endMarker);
+            moveCamera(end);
+        }
+
+
+//in xml layout
+<fragment
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.google.android.gms.maps.MapFragment" />
