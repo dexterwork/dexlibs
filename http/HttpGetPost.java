@@ -104,6 +104,7 @@ public class HttpGetPost extends AsyncTask<Void, Void, Object> {
 
     public void afterGson(Object object) {
     }
+    public void afterPostExecute(Object o){};
 
     @Override
     protected void onPostExecute(Object o) {
@@ -112,5 +113,6 @@ public class HttpGetPost extends AsyncTask<Void, Void, Object> {
             progressDialog.dismiss();
             progressDialog = null;
         }
+        afterPostExecute(o);
     }
 }
