@@ -1,6 +1,6 @@
-package studio.dexter.http_module;
+package com.awant.lion.tools;
 
-import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Created by Dexter on 2015/7/16.
@@ -30,6 +29,7 @@ public class HttpGetPost extends AsyncTask<Void, Void, Object> {
     Class<?> bundleClass;
     HttpGet httpGet = null;
     HttpPost httpPost = null;
+    ProgressDialog progressDialog;
 
     public enum HttpType {GET, POST}
 
@@ -39,7 +39,16 @@ public class HttpGetPost extends AsyncTask<Void, Void, Object> {
         this.bundleClass = bundleClass;
     }
 
-    @SuppressLint("NewApi")
+    public void setProgressDialog(ProgressDialog progressDialog) {
+        this.progressDialog = progressDialog;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        if (progressDialog != null) progressDialog.show();
+    }
+
     @Override
     protected Object doInBackground(Void... params) {
         InputStream is = null;
@@ -47,8 +56,9 @@ public class HttpGetPost extends AsyncTask<Void, Void, Object> {
         setHttp();
         try {
             HttpEntity httpEntity = getResponse().getEntity();
+            if (httpEntity == null) return null;
             String result = EntityUtils.toString(httpEntity);
-            is = new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8));
+            is = new ByteArrayInputStream(result.getBytes("UTF-8"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,6 +71,8 @@ public class HttpGetPost extends AsyncTask<Void, Void, Object> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        afterGson(object);
         return object;
     }
 
@@ -76,7 +88,7 @@ public class HttpGetPost extends AsyncTask<Void, Void, Object> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        throw new RuntimeException("HttpResponse is null.");
+        return null;
     }
 
     private void setHttp() {
@@ -90,4 +102,15 @@ public class HttpGetPost extends AsyncTask<Void, Void, Object> {
         }
     }
 
+    public void afterGson(Object object) {
+    }
+
+    @Override
+    protected void onPostExecute(Object o) {
+        super.onPostExecute(o);
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+    }
 }
