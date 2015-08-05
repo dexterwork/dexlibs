@@ -22,7 +22,7 @@ build.gradle中如檔案內之參考
 
 以下提供模版：
 
-#指定代碼的壓???
+#指定代碼的壓縮級別
 -optimizationpasses 5
 
 #包含不混合大小寫
