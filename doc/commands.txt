@@ -1,0 +1,10 @@
+
+mount server folder--------example
+/bin/mount -t cifs //192.168.1.150/ourpowershare /mnt/share -o username=dexter,password=密碼,codepage=cp950
+
+*may use 'smbclient' to list //192.168.1.150 have share folder name.
+
+tar -jcvf filename.tar.bz2 filename
+tar -jxvf filename.tar.bz2
+
+

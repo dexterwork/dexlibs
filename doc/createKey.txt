@@ -1,0 +1,12 @@
+https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2
+
+create the RSA key pair.
+
+$ ssh-keygen -t rsa
+
+$ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+===================================
+
+the keys in ~/.ssh
+
+
