@@ -1,0 +1,4 @@
+  private void initSql() {
+        SqlManager sqlManager = new SqlManager();
+        sqlManager.initDatabase(this,  "table");// table name in assets folder name like "assets/table/sample_sql_in_assets_folder"
+  }

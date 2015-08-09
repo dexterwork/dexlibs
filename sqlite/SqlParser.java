@@ -23,10 +23,20 @@ public class SqlParser {
      */
     public TreeMap<String, TreeMap<String, String>> getTables(Context context, String[] filename) {
         TreeMap<String, TreeMap<String, String>> tables = new TreeMap<String, TreeMap<String, String>>();
-        for (String name : filename) {
-            TreeMap<String, String> map = parserFileFromAssets(context, name);
-            tables.put(map.get(SqlKeys.TABLE_NAME), map);
-        }
+        for (String name : filename) getTables(context, name);
+        return tables;
+    }
+
+    /**
+     *
+     * @param context
+     * @param filename the file in assets folder.
+     * @return HashMap(TableName, FieldName and Typed)
+     */
+    public TreeMap<String, TreeMap<String, String>> getTables(Context context, String filename) {
+        TreeMap<String, TreeMap<String, String>> tables = new TreeMap<String, TreeMap<String, String>>();
+        TreeMap<String, String> map = parserFileFromAssets(context, filename);
+        tables.put(map.get(SqlKeys.TABLE_NAME), map);
         return tables;
     }
 

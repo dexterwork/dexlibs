@@ -1,36 +1,35 @@
 package studio.dexter.basic;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 
-import studio.dexter.fragments.MainFragment;
-import studio.dexter.mywishup.NavigationDrawerFragment;
-import studio.dexter.mywishup.R;
+import studio.dexter.ohmoneytrial.NavigationDrawerFragment;
+import studio.dexter.ohmoneytrial.R;
+import studio.dexter.system.FragmentMas;
+import studio.dexter.system.FragmentMaster;
+
 
 /**
  * Created by dexter on 2015/6/14.
  */
-public class BasicActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
-
+public abstract class BasicActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+    protected FragmentMaster fragmentMaster;
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     protected NavigationDrawerFragment mNavigationDrawerFragment;
     protected CharSequence mTitle;
-    protected String[] navigationTitles;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fragmentMaster = new FragmentMas(this);
+        initSystem();
         setContentView(R.layout.activity_main);
-        navigationTitles = getResources().getStringArray(R.array.navigation_title_array);
-
+//        navigationTitles = getResources().getStringArray(R.array.navigation_title_array);
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -39,15 +38,26 @@ public class BasicActivity extends ActionBarActivity implements NavigationDrawer
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+
     }
+
+    /**
+     * init system before setContantView method.
+     */
+    protected abstract void initSystem();
+
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container,  new MainFragment()).addToBackStack()
-                .commit();
+        BasicFragment fragment = fragmentMaster.getFragmentWithNavigation(position);
+        fragmentMaster.replaceFragment(fragment, true);
+    }
+
+
+    public void replaceFragment(BasicFragment fragment, boolean clearHistory) {
+        fragmentMaster.replaceFragment(fragment, clearHistory);
     }
 
 
@@ -59,37 +69,12 @@ public class BasicActivity extends ActionBarActivity implements NavigationDrawer
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-//        if (!mNavigationDrawerFragment.isDrawerOpen()) {
-//            // Only show items in the action bar relevant to this screen
-//            // if the drawer is not showing. Otherwise, let the drawer
-//            // decide what to show in the action bar.
-//            getMenuInflater().inflate(R.menu.main, menu);
-//            restoreActionBar();
-//            return true;
-//        }
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     public void onSectionAttached(int number) {
-        mTitle = navigationTitles[number];
+        mTitle = getResources().getStringArray(R.array.navigation_title_array)[number];
     }
 
-
+    @Override
+    public void onBackPressed() {
+        fragmentMaster.back();
+    }
 }

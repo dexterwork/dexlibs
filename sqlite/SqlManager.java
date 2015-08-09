@@ -1,4 +1,4 @@
-package studio.dexter.basic_sql;
+package studio.dexter.sqlite;
 
 import android.content.Context;
 
@@ -14,9 +14,19 @@ public class SqlManager {
      * create database if does not exist.
      *
      * @param context
-     * @param dbName
      * @param assetsFolderName
      * @return
+     */
+    public void initDatabase(Context context, String assetsFolderName) {
+        initDatabase(context, SqlKeys.DB_NAME, assetsFolderName);
+    }
+
+    /**
+     * create database if does not exist.
+     *
+     * @param context
+     * @param dbName
+     * @param assetsFolderName
      */
     public void initDatabase(Context context, String dbName, String assetsFolderName) {
         try {
@@ -25,17 +35,19 @@ public class SqlManager {
                 for (int i = 0; i < tableFileList.length; i++) {
                     tableFileList[i] = assetsFolderName + "/" + tableFileList[i];
                 }
-                sql = new BasicSql(context, dbName, tableFileList, 1);
+                sql = new BasicSql(context, dbName, tableFileList);
                 sql.getReadableDatabase();
                 sql.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     /**
      * create databases if does not exist.
+     *
      * @param context
      * @param dbName
      * @param assetsFolderName

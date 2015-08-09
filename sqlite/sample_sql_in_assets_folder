@@ -1,0 +1,7 @@
+db, ohMoneyTrial.db
+table, user_info
+user_name,text
+user_id,text
+
+gender,text
+empty, 5
