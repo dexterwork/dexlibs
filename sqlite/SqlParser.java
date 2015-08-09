@@ -1,4 +1,4 @@
-package studio.dexter.basic_sql;
+package studio.dexter.sqlite;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.TreeMap;
 
-import studio.dexter.container.Keys;
 import studio.dexter.tools.MLog;
 
 /**
@@ -26,7 +25,7 @@ public class SqlParser {
         TreeMap<String, TreeMap<String, String>> tables = new TreeMap<String, TreeMap<String, String>>();
         for (String name : filename) {
             TreeMap<String, String> map = parserFileFromAssets(context, name);
-            tables.put(map.get(Keys.TABLE_NAME), map);
+            tables.put(map.get(SqlKeys.TABLE_NAME), map);
         }
         return tables;
     }
@@ -83,10 +82,10 @@ public class SqlParser {
      * @return
      */
     private TreeMap<String, String> addReservedFields(TreeMap<String, String> map) throws RuntimeException {
-        if (!map.keySet().contains(Keys.EMPTY)) return map;
-        int addQuantity = Integer.valueOf(map.get(Keys.EMPTY).trim());
+        if (!map.keySet().contains(SqlKeys.EMPTY)) return map;
+        int addQuantity = Integer.valueOf(map.get(SqlKeys.EMPTY).trim());
         String field = "field";
-        if (map.keySet().contains(Keys.FIELD)) field = map.get(Keys.FIELD);
+        if (map.keySet().contains(SqlKeys.FIELD)) field = map.get(SqlKeys.FIELD);
         for (int i = 0; i < addQuantity; i++) {
             map.put(field.toLowerCase() + "_" + i, "TEXT");
         }
@@ -101,10 +100,10 @@ public class SqlParser {
     public String parserCreateTableExecToString(TreeMap<String, String> tableMap) {
         if (tableMap == null)
             throw new RuntimeException("non table map:BasicSql.getNewTableField() /or key/value is error.");
-        if (!tableMap.containsKey(Keys.TABLE_NAME))
+        if (!tableMap.containsKey(SqlKeys.TABLE_NAME))
             throw new RuntimeException("non table name:BasicSql.getNewTableField() /or key/value is error.");
-        String tableName = tableMap.get(Keys.TABLE_NAME);
-        if (tableMap.containsKey(Keys._ID)) tableMap.remove(Keys._ID);
+        String tableName = tableMap.get(SqlKeys.TABLE_NAME);
+        if (tableMap.containsKey(SqlKeys._ID)) tableMap.remove(SqlKeys._ID);
         String createTable = "create table " + tableName + "(_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,";
 
         Iterator it = tableMap.keySet().iterator();
@@ -125,20 +124,20 @@ public class SqlParser {
     }
 
     private String toUpperWithCheck(String key, String str) {
-        if (key.equals(Keys._ID)) return str;
-        if (key.equals(Keys.DB)) return str;
-        if (key.equals(Keys.TABLE_NAME)) return str;
-        if (key.equals(Keys.EMPTY)) return str;
-        if (key.equals(Keys.FIELD)) return str;
+        if (key.equals(SqlKeys._ID)) return str;
+        if (key.equals(SqlKeys.DB)) return str;
+        if (key.equals(SqlKeys.TABLE_NAME)) return str;
+        if (key.equals(SqlKeys.EMPTY)) return str;
+        if (key.equals(SqlKeys.FIELD)) return str;
         return str.toUpperCase();
     }
 
     private boolean dontAddMapCheck(String key) {
-        if (key.equals(Keys._ID)) return true;
-        if (key.equals(Keys.TABLE_NAME)) return true;
-        if (key.equals(Keys.DB)) return true;
-        if (key.equals(Keys.EMPTY)) return true;
-        if (key.equals(Keys.FIELD)) return true;
+        if (key.equals(SqlKeys._ID)) return true;
+        if (key.equals(SqlKeys.TABLE_NAME)) return true;
+        if (key.equals(SqlKeys.DB)) return true;
+        if (key.equals(SqlKeys.EMPTY)) return true;
+        if (key.equals(SqlKeys.FIELD)) return true;
         return false;
     }
 }
