@@ -27,6 +27,8 @@ local.properties
 .idea/vcs.xml
 *.iml
 
+build/
+
 # OS-specific files
 .DS_Store
 .DS_Store?
