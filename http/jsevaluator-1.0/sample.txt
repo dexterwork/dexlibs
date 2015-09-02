@@ -1,0 +1,51 @@
+ 
+ webView = (WebView) findViewById(R.id.webView);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.canGoBack();
+
+        webView.addJavascriptInterface(new MyJavaScriptInterface(), "HtmlViewer");
+        final JsEvaluator jsEvaluator = new JsEvaluator(this);//import JsEvaluator 
+        webView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return false;
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+
+                //super.onPageFinished(view, url);
+
+                webView.loadUrl("javascript:window.HtmlViewer.showHTML" +
+                        "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+
+
+            }
+        });
+        webView.loadUrl("url");
+
+
+
+
+
+
+public class MyJavaScriptInterface {
+
+        public MyJavaScriptInterface() {
+
+        }
+
+        @JavascriptInterface
+        public void showHTML(String html) {
+            MLog.w(this, "dex got html = " + html);
+//get sample
+            if (html.contains("Status") && html.contains("SUCCESS")) {
+               // do success or other string
+            } else if (html.contains("Status") && html.contains("FAIL")) {
+               
+            }
+
+        }
+    }
