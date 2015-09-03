@@ -6,12 +6,12 @@ import android.util.DisplayMetrics;
 /**
  * Created by dexter on 2015/1/29.
  */
-public class ScreenSize {
+public class ScreenTools {
     private int screenHeight;
     private int screenWidth;
     private Activity activity;
 
-    public ScreenSize(Activity activity) {
+    public ScreenTools (Activity activity) {
         this.activity = activity;
         setSize();
     }
@@ -29,5 +29,12 @@ public class ScreenSize {
 
     public int getScreenWidth() {
         return screenWidth;
+    }
+
+
+    public static boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 }
