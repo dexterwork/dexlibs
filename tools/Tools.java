@@ -61,13 +61,20 @@ public class Tools {
         return String.valueOf( (int) d);
     }
 
-
-    public void clearCache(Context context) {
+ public void clearCache(Context context) {
         try {
             File dir = context.getCacheDir();
             if (dir != null && dir.isDirectory()) deleteDir(dir);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        File file = context.getFilesDir();
+        if (file != null && file.isDirectory()) {
+            for (String name : file.list()) {
+                File temp=new File(context.getFilesDir(),name);
+                context.deleteFile(temp.getName());
+            }
         }
     }
 
