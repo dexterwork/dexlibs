@@ -16,4 +16,7 @@ public class BasicFragment extends Fragment {
 //        fragment.setArguments(args);
 //        return fragment;
 //    }
+
+//clear fragment back stack
+//popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE); 
 }
