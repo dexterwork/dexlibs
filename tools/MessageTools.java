@@ -1,6 +1,6 @@
 package com.awant.lion.objects;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Color;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -10,12 +10,21 @@ import android.widget.Toast;
  */
 public class MessageTools {
 
-    public static void makeRedToast(Context context, String message, int showTime) {
-        Toast toast = Toast.makeText(context, message, showTime);
-        TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
-        textView.setBackgroundColor(Color.RED);
-        textView.setPadding(10, 10, 10, 10);
-        toast.getView().setBackgroundColor(Color.RED);
-        toast.show();
+
+    public static void makeRedToast(final Activity activity, final String message, final int showTime) {
+
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast toast = Toast.makeText(activity, message, showTime);
+                TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
+                textView.setBackgroundColor(Color.RED);
+                textView.setPadding(10, 10, 10, 10);
+                toast.getView().setBackgroundColor(Color.RED);
+                toast.show();
+            }
+        });
     }
+
+
 }
