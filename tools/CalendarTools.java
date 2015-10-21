@@ -17,4 +17,19 @@ public class CalendarTools {
         date += Tools.strLen(calendar.get(Calendar.SECOND), 2);
         return date;
     }
+	
+	public static String getDateString(Date date, String format) {
+        if (TextUtils.isEmpty(format)) {
+            MLog.e(TAG, "getDateString: format is null");
+        }
+
+        if (date == null) {
+            date = new Date(System.currentTimeMillis()); // 獲取當前時間
+        }
+        
+        SimpleDateFormat formatter = new SimpleDateFormat(format);
+        String currentDate = formatter.format(date);
+
+        return currentDate;
+    }
 }
