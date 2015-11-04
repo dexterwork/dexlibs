@@ -1,0 +1,4 @@
+
+
+--SquareButton.java
+	custom size object, in GridView item, can set GridView row height.
