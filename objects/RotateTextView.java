@@ -59,4 +59,10 @@ public class RotateTextView extends TextView {
     public void setDegrees(int degrees) {
         mDegrees = degrees;
     }
+
+
+// in style.xml
+//    <declare-styleable name="RotateTextView">
+//    <attr name="degree" format="dimension" />
+//    </declare-styleable>
 }
