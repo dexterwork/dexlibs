@@ -96,4 +96,46 @@ public class Tools {
         InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
+	public Bitmap getBitmap(String path) {
+        File imgFile = new File(path);
+        if (!imgFile.exists()) return null;
+
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inJustDecodeBounds = true;
+        Bitmap bitmap = null;
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(imgFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        byte[] data = new byte[0];
+        try {
+            data = readStream(inputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (data != null) {
+            try {
+                bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+            } catch (OutOfMemoryError oom) {
+                oom.printStackTrace();
+            }
+        }
+        return bitmap;
+    }
+
+    private byte[] readStream(InputStream inStream) throws Exception {
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int len = 0;
+        while ((len = inStream.read(buffer)) != -1) {
+            outStream.write(buffer, 0, len);
+        }
+        outStream.close();
+        inStream.close();
+        return outStream.toByteArray();
+    }
 }
