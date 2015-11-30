@@ -154,6 +154,15 @@ public class NetworkTool {
         if (!reset()) return null;
         return networkInfo.getState().toString();
     }
+	
+	 public boolean isConnectedInternet() {
+        ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        }
+        return false;
+    }
 
 
 }
