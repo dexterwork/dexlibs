@@ -138,4 +138,11 @@ public class Tools {
         inStream.close();
         return outStream.toByteArray();
     }
+	
+	//  try {
+    //       mVersionCode = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionCode;
+    //        mVersionName = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName;
+    //    } catch (PackageManager.NameNotFoundException e) {
+    //        e.printStackTrace();
+    //    }
 }
