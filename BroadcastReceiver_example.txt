@@ -1,0 +1,13 @@
+ registerReceiver(dialogReceiver, new IntentFilter(Cons.RECEIVER_DIALOG_DISMISS));
+  unregisterReceiver(dialogReceiver);
+  
+      dialogReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                dismissProgress();
+            }
+        };
+		
+		 Intent intent = new Intent(Cons.RECEIVER_DIALOG_DISMISS);
+        intent.putExtras(bundle);
+        getApplicationContext().sendBroadcast(intent);
