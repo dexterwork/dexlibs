@@ -139,6 +139,18 @@ public class Tools {
         return outStream.toByteArray();
     }
 	
+	
+    /**
+     * 打開瀏覽器
+     * @param activity
+     * @param strUrl
+     */
+    public void openUrlPage(Activity activity,String strUrl){
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(strUrl));
+        activity.startActivity(intent);
+    }
+
+	
 	//  try {
     //       mVersionCode = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionCode;
     //        mVersionName = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName;
