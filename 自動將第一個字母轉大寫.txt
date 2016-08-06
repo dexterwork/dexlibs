@@ -1,0 +1,46 @@
+accountFlag =外部變數
+
+editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    String str = s.toString();
+                    if (TextUtils.isEmpty(str)) {
+                        accountFlag = false;
+                        return;
+                    }
+                    str = str.toUpperCase();
+                    if (!str.substring(0, 1).matches("[A-Z]")) {
+                        accountFlag = false;
+                        editText.setText("");
+                        return;
+                    }
+                    if (str.length() > 1) {
+                        if (!str.substring(1).matches("[0-9]*")) {
+                            str = str.substring(0, 1);
+                            editText.setText(str);
+                            editText.setSelection(1);
+                            return;
+                        }
+                    }
+                    if (accountFlag) return;
+                    accountFlag = true;
+                    editText.setText(str);
+                    if (str.length() == 1) {
+                        editText.setSelection(1);
+                        return;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
