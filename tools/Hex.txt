@@ -22,3 +22,33 @@ private String toHex256(String value) {
 		}
 		return hs.toUpperCase();
 	}
+	
+	  /**
+     * string convert to MD5
+     *
+     * @param str
+     * @return
+     */
+    public  String toMd5(String str) {
+        if (TextUtils.isEmpty(str)) {
+            MLog.e(this,"dexter to MD5 ERROR because string is EMPTY.");
+            return "";
+        }
+        MessageDigest digester = null;
+        try {
+            digester = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        digester.update(str.getBytes());
+        byte[] hash = digester.digest();
+        StringBuffer hexString = new StringBuffer();
+        for (int i = 0; i < hash.length; i++) {
+            if ((0xff & hash[i]) < 0x10) {
+                hexString.append("0" + Integer.toHexString((0xFF & hash[i])));
+            } else {
+                hexString.append(Integer.toHexString(0xFF & hash[i]));
+            }
+        }
+        return hexString.toString();
+    }
