@@ -6,4 +6,6 @@ package tools.gps;
 public interface GpsCheckerListener {
     void onGpsOff();
     void onGpsOn();
+    void sendLocation(Double longitude, Double latitude);
+    void noLocation();//無法定位座標
 }
