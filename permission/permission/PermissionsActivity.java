@@ -11,15 +11,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 
-import com.skyking.skykingradio.R;
-
-import basic.BasicAppActivity;
+import dexter.studio.upro.R;
 
 /**
- * Created by SkykingAndroid on 2016/8/9.
+ * Created by Dexter on 2016/8/9.
  */
-public class PermissionsActivity extends BasicAppActivity {
+public class PermissionsActivity extends AppCompatActivity {
 
     public static final int PERMISSIONS_GRANTED = 0; // 权限授权
     public static final int PERMISSIONS_DENIED = 1; // 权限拒绝
