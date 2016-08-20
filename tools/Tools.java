@@ -157,4 +157,16 @@ public class Tools {
     //    } catch (PackageManager.NameNotFoundException e) {
     //        e.printStackTrace();
     //    }
+	
+	
+	  /**
+     * get pixels from dp dize
+     * @param context
+     * @param dbSize
+     * @return
+     */
+    public int getPixelsFromDp(Context context, int dbSize) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dbSize * scale + 0.5f);
+    }
 }
