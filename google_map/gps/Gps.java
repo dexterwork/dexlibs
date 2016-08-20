@@ -156,7 +156,7 @@ public class Gps implements LocationListener {
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         MLog.w(this, "dexter onStatusChanged provider=" + provider + "/status=" + status);
-        Toast.makeText(activity, "onStatusChanged provider=" + provider + "/status=" + status, Toast.LENGTH_LONG).show();
+        //Toast.makeText(activity, "onStatusChanged provider=" + provider + "/status=" + status, Toast.LENGTH_LONG).show();
     }
 
     @Override
