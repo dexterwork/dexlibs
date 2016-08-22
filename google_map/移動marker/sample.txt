@@ -1,0 +1,39 @@
+ private void setLocation(LatLng latLng) {
+        bottomMessageBar.showMessage(true, latLng.longitude + ", " + latLng.latitude);
+        if (googleMap == null) {
+            MLog.d(this, "dexter google map is null");
+            return;
+        }
+        try {
+            CameraPosition cp = googleMap.getCameraPosition();
+            if (cp != null) zoom = googleMap.getCameraPosition().zoom;
+        } catch (Exception e) {
+        }
+        MLog.i(this, "dexter get zoom=" + zoom);
+//        LatLng latLng = new LatLng(25.0477498, 121.5170497);
+        if (marker == null) {
+            MarkerOptions marker = new MarkerOptions().position(latLng);
+            Bitmap bitmap = BitmapFactory.decodeResource(activity.getResources(), R.drawable.dot_map_orange);
+            int pixels = new Tools().getPixelsFromDp(activity, 12);
+            bitmap = bitmap.createScaledBitmap(bitmap, pixels, pixels, false);
+            marker.icon(BitmapDescriptorFactory.fromBitmap(bitmap));
+//        new MarkerOptions().position(latLng).title("Taipei");
+            this.marker = googleMap.addMarker(marker);
+        } else {
+		// 移動 marker
+            LatLngInterpolator.Spherical spherical = new LatLngInterpolator.Spherical();
+            spherical.interpolate(0.5f, marker.getPosition(), latLng);
+            MarkerAnimation.animateMarkerToGB(marker, latLng, spherical);
+        }
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        if (!isSettingZoom) {
+            isSettingZoom = true;
+            zoom = 17f;
+        }
+        final CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(zoom).bearing(0).build(); //replace with your current lat long and try
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+    }
+
+    float zoom;
+    boolean isSettingZoom;
+    Marker marker;
