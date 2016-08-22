@@ -1,0 +1,25 @@
+
+跑馬燈 example
+
+第一個 TextView 要有以下屬性
+
+  <TextView
+    android:ellipsize="marquee"
+    android:marqueeRepeatLimit="marquee_forever"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:singleLine="true"/>
+						
+						
+並在程式碼裡在 setText() 後, 加上 
+ tvTextView.setSelected(true);
+ 
+ ====================================================================
+ 如果是第二個 TextView 也要同時有跑馬燈效果, 只要以下三個屬性
+  <TextView
+    android:ellipsize="marquee"
+    android:marqueeRepeatLimit="marquee_forever"
+    android:singleLine="true"/>
+						
+並在程式碼裡在 setText() 後, 加上 
+ tvTextView.setSelected(true);
