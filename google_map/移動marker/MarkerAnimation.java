@@ -1,7 +1,7 @@
 /* Copyright 2013 Google Inc.
    Licensed under Apache 2.0: http://www.apache.org/licenses/LICENSE-2.0.html */
 
-package route.training;
+package objects.gps_map.marker;
 
 import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
@@ -18,7 +18,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 public class MarkerAnimation {
-   public static void animateMarkerToGB(final Marker marker, final LatLng finalPosition, final LatLngInterpolator latLngInterpolator) {
+    public boolean stop;
+
+    public void animateMarkerToGB(final Marker marker, final LatLng finalPosition, final LatLngInterpolator latLngInterpolator) {
         final LatLng startPosition = marker.getPosition();
         final Handler handler = new Handler();
         final long start = SystemClock.uptimeMillis();
@@ -37,9 +39,14 @@ public class MarkerAnimation {
                 t = elapsed / durationInMs;
                 v = interpolator.getInterpolation(t);
 
-                marker.setPosition(latLngInterpolator.interpolate(v, startPosition, finalPosition));
-
+                if (stop) return;
+                try {
+                    marker.setPosition(latLngInterpolator.interpolate(v, startPosition, finalPosition));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 // Repeat till progress is complete.
+
                 if (t < 1) {
                     // Post again 16ms later.
                     handler.postDelayed(this, 16);
@@ -49,7 +56,7 @@ public class MarkerAnimation {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-   public static void animateMarkerToHC(final Marker marker, final LatLng finalPosition, final LatLngInterpolator latLngInterpolator) {
+    public void animateMarkerToHC(final Marker marker, final LatLng finalPosition, final LatLngInterpolator latLngInterpolator) {
         final LatLng startPosition = marker.getPosition();
 
         ValueAnimator valueAnimator = new ValueAnimator();
@@ -67,7 +74,7 @@ public class MarkerAnimation {
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-   public static void animateMarkerToICS(Marker marker, LatLng finalPosition, final LatLngInterpolator latLngInterpolator) {
+    public void animateMarkerToICS(Marker marker, LatLng finalPosition, final LatLngInterpolator latLngInterpolator) {
         TypeEvaluator<LatLng> typeEvaluator = new TypeEvaluator<LatLng>() {
             @Override
             public LatLng evaluate(float fraction, LatLng startValue, LatLng endValue) {

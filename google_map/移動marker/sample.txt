@@ -1,4 +1,4 @@
- private void setLocation(LatLng latLng) {
+﻿ private void setLocation(LatLng latLng) {
         bottomMessageBar.showMessage(true, latLng.longitude + ", " + latLng.latitude);
         if (googleMap == null) {
             MLog.d(this, "dexter google map is null");
@@ -19,6 +19,7 @@
             marker.icon(BitmapDescriptorFactory.fromBitmap(bitmap));
 //        new MarkerOptions().position(latLng).title("Taipei");
             this.marker = googleMap.addMarker(marker);
+	    this.marker.setAnchor(0.5f,0.5f);
         } else {
 		// 移動 marker
             LatLngInterpolator.Spherical spherical = new LatLngInterpolator.Spherical();
