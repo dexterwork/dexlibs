@@ -188,4 +188,17 @@ public class Tools {
         }
         return null;
     }
+	
+	 public void toGooglePlay(Context context) {
+        String packageName = context.getPackageName();
+        Intent intent;
+        try {
+            // Open app with Google Play app
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            // Open Google Play website
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + packageName));
+        }
+        context.startActivity(intent);
+    }
 }
