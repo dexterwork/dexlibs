@@ -201,4 +201,12 @@ public class Tools {
         }
         context.startActivity(intent);
     }
+	
+	  /**
+     * 回傳螢幕目前是否為水平橫式
+     * @return
+     */
+    private boolean isLandscape() {
+        return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+    }
 }
