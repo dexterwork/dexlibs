@@ -206,7 +206,48 @@ public class Tools {
      * 回傳螢幕目前是否為水平橫式
      * @return
      */
-    private boolean isLandscape() {
-        return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+    public boolean isLandscape(Context context) {
+        return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+    }
+	
+	  /**
+     * 將一串文字前幾個字轉為 * 號
+     *
+     * @param originString 原始字串
+     * @param count        前面幾個字
+     * @return
+     */
+    public String replacePasswordString(String originString, int count) {
+        String sub0 = originString.substring(0, originString.length() - (originString.length() - count));
+        String sub = originString.substring(count);
+
+        sub0 = sub0.replaceAll("\\d", "*");
+        return sub0 + sub;
+    }
+	
+	 /**
+     * string to md5
+     * @param string
+     * @return
+     */
+	  public static String md5(String string) {
+        MessageDigest digest;
+        String stringEncoded = "";
+        try {
+            digest = MessageDigest.getInstance("MD5");
+            digest.reset();
+            digest.update(string.getBytes());
+            byte[] bytes = digest.digest();
+            int length = bytes.length;
+            StringBuilder sb = new StringBuilder(length << 1);
+            for (int i = 0; i < length; i++) {
+                sb.append(Character.forDigit((bytes[i] & 0xf0) >> 4, 16));
+                sb.append(Character.forDigit(bytes[i] & 0x0f, 16));
+            }
+            stringEncoded = sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return stringEncoded;
     }
 }
