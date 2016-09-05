@@ -202,6 +202,21 @@ public class Tools {
         context.startActivity(intent);
     }
 	
+	/**
+	*解鎖讓螢幕可以翻轉
+	*/
+	public void unlockOrientation() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+    }
+
+	/**
+	*讓螢幕不可以翻轉
+	*/
+    public void lockOrientationPortrait() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+	
 	  /**
      * 回傳螢幕目前是否為水平橫式
      * @return
