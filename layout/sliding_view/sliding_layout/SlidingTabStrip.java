@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.twgood.android.common.view;
+package com.twgood.android.objects.sliding_layout;
 
 import android.R;
 import android.content.Context;
@@ -30,7 +30,7 @@ class SlidingTabStrip extends LinearLayout {
 
     private static final int DEFAULT_BOTTOM_BORDER_THICKNESS_DIPS = 2;
     private static final byte DEFAULT_BOTTOM_BORDER_COLOR_ALPHA = 0x26;
-    private static final int SELECTED_INDICATOR_THICKNESS_DIPS = 8;
+    private int indicatorHeightDip = 8;
     private static final int DEFAULT_SELECTED_INDICATOR_COLOR = 0xFF33B5E5;
 
     private static final int DEFAULT_DIVIDER_THICKNESS_DIPS = 1;
@@ -66,7 +66,7 @@ class SlidingTabStrip extends LinearLayout {
 
         TypedValue outValue = new TypedValue();
         context.getTheme().resolveAttribute(R.attr.colorForeground, outValue, true);
-        final int themeForegroundColor =  outValue.data;
+        final int themeForegroundColor = outValue.data;
 
         mDefaultBottomBorderColor = setColorAlpha(themeForegroundColor,
                 DEFAULT_BOTTOM_BORDER_COLOR_ALPHA);
@@ -80,12 +80,21 @@ class SlidingTabStrip extends LinearLayout {
         mBottomBorderPaint = new Paint();
         mBottomBorderPaint.setColor(mDefaultBottomBorderColor);
 
-        mSelectedIndicatorThickness = (int) (SELECTED_INDICATOR_THICKNESS_DIPS * density);
+        mSelectedIndicatorThickness = (int) (indicatorHeightDip * density);
         mSelectedIndicatorPaint = new Paint();
 
         mDividerHeight = DEFAULT_DIVIDER_HEIGHT;
         mDividerPaint = new Paint();
         mDividerPaint.setStrokeWidth((int) (DEFAULT_DIVIDER_THICKNESS_DIPS * density));
+    }
+
+    /**
+     * 設定底線高度
+     *
+     * @param indicatorHeightDip
+     */
+    public void setIndicatorHeightDip(int indicatorHeightDip) {
+        this.indicatorHeightDip = indicatorHeightDip;
     }
 
     void setCustomTabColorizer(SlidingTabLayout.TabColorizer customTabColorizer) {
@@ -154,11 +163,17 @@ class SlidingTabStrip extends LinearLayout {
 
         // Vertical separators between the titles
         int separatorTop = (height - dividerHeightPx) / 2;
-        for (int i = 0; i < childCount - 1; i++) {
+        for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
-            mDividerPaint.setColor(tabColorizer.getDividerColor(i));
-            canvas.drawLine(child.getRight(), separatorTop, child.getRight(),
-                    separatorTop + dividerHeightPx, mDividerPaint);
+
+            // dexter update
+            child.setAlpha(mSelectedPosition == i ? 1.0f : 0.5f);
+
+            if (i < childCount - 1) {
+                mDividerPaint.setColor(tabColorizer.getDividerColor(i));
+                canvas.drawLine(child.getRight(), separatorTop, child.getRight(),
+                        separatorTop + dividerHeightPx, mDividerPaint);
+            }
         }
     }
 

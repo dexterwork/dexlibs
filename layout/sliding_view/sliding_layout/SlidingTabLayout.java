@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.twgood.android.common.view;
+package com.twgood.android.objects.sliding_layout;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -28,22 +28,26 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.List;
 
 /**
  * To be used with ViewPager to provide a tab indicator component which give constant feedback as to
  * the user's scroll progress.
- * <p>
+ * <p/>
  * To use the component, simply add it to your view hierarchy. Then in your
  * {@link android.app.Activity} or {@link android.support.v4.app.Fragment} call
  * {@link #setViewPager(ViewPager)} providing it the ViewPager this layout is being used for.
- * <p>
+ * <p/>
  * The colors can be customized in two ways. The first and simplest is to provide an array of colors
  * via {@link #setSelectedIndicatorColors(int...)} and {@link #setDividerColors(int...)}. The
  * alternative is via the {@link TabColorizer} interface which provides you complete control over
  * which color is used for any individual position.
- * <p>
+ * <p/>
  * The views used as tabs can be customized by calling {@link #setCustomTabView(int, int)},
  * providing the layout ID of your custom layout.
  */
@@ -105,7 +109,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
     /**
      * Set the custom {@link TabColorizer} to be used.
-     *
+     * <p/>
      * If you only require simple custmisation then you can use
      * {@link #setSelectedIndicatorColors(int...)} and {@link #setDividerColors(int...)} to achieve
      * similar effects.
@@ -142,10 +146,19 @@ public class SlidingTabLayout extends HorizontalScrollView {
     }
 
     /**
+     * 設定底線高度
+     *
+     * @param indicatorHeightDip
+     */
+    public void setIndicatorHeightDip(int indicatorHeightDip) {
+        mTabStrip.setIndicatorHeightDip(indicatorHeightDip);
+    }
+
+    /**
      * Set the custom layout to be inflated for the tab views.
      *
      * @param layoutResId Layout id to be inflated
-     * @param textViewId id of the {@link TextView} in the inflated view
+     * @param textViewId  id of the {@link TextView} in the inflated view
      */
     public void setCustomTabView(int layoutResId, int textViewId) {
         mTabViewLayoutId = layoutResId;
@@ -166,6 +179,12 @@ public class SlidingTabLayout extends HorizontalScrollView {
         }
     }
 
+    int titleTextSize;
+
+    public void setTitleTextSize(int titleTextSize) {
+        this.titleTextSize = titleTextSize;
+    }
+
     /**
      * Create a default view to be used for tabs. This is called if a custom tab view is not set via
      * {@link #setCustomTabView(int, int)}.
@@ -173,8 +192,13 @@ public class SlidingTabLayout extends HorizontalScrollView {
     protected TextView createDefaultTabView(Context context) {
         TextView textView = new TextView(context);
         textView.setGravity(Gravity.CENTER);
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, TAB_VIEW_TEXT_SIZE_SP);
-        textView.setTypeface(Typeface.DEFAULT_BOLD);
+
+        if (titleTextSize != 0) {
+            textView.setTextSize(titleTextSize);
+        } else {
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, TAB_VIEW_TEXT_SIZE_SP);
+        }
+//        textView.setTypeface(Typeface.DEFAULT_BOLD);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             // If we're running on Honeycomb or newer, then we can use the Theme's
@@ -193,23 +217,13 @@ public class SlidingTabLayout extends HorizontalScrollView {
         int padding = (int) (TAB_VIEW_PADDING_DIPS * getResources().getDisplayMetrics().density);
         textView.setPadding(padding, padding, padding, padding);
 
-        int screenWidth = getResources().getDisplayMetrics().widthPixels;
-
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            screenWidth = getResources().getDisplayMetrics().heightPixels;
-        } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            screenWidth = getResources().getDisplayMetrics().widthPixels;
-        }
-
-        textView.setWidth(screenWidth / 2);
-        textView.setTextColor(Color.WHITE);
 
         return textView;
     }
 
     private void populateTabStrip() {
         final PagerAdapter adapter = mViewPager.getAdapter();
-        final View.OnClickListener tabClickListener = new TabClickListener();
+        final OnClickListener tabClickListener = new TabClickListener();
 
         for (int i = 0; i < adapter.getCount(); i++) {
             View tabView = null;
@@ -233,8 +247,43 @@ public class SlidingTabLayout extends HorizontalScrollView {
             tabTitleView.setText(adapter.getPageTitle(i));
             tabView.setOnClickListener(tabClickListener);
 
+            if (monoSpace) {
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                params.weight = 1;
+                tabView.setLayoutParams(params);
+            }
+            if (titleColors != null) {
+                tabTitleView.setTextColor(titleColors.get(i));
+            } else if (titleColor != 0) {
+                tabTitleView.setTextColor(titleColor);
+            }
+
+
             mTabStrip.addView(tabView);
         }
+    }
+
+    List<Integer> titleColors;
+
+    public void setTitleColor(int titleColor) {
+        this.titleColor = titleColor;
+    }
+
+    public void setTitleColors(List<Integer> titleColors) {
+        this.titleColors = titleColors;
+    }
+
+    int titleColor;
+
+    boolean monoSpace;
+
+    /**
+     * 設定 tab 的寬度是否都等寬(全部同時顯示在畫面上)
+     *
+     * @param monoSpace
+     */
+    public void setMonoSpace(boolean monoSpace) {
+        this.monoSpace = monoSpace;
     }
 
     @Override
@@ -312,7 +361,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
     }
 
-    private class TabClickListener implements View.OnClickListener {
+    private class TabClickListener implements OnClickListener {
         @Override
         public void onClick(View v) {
             for (int i = 0; i < mTabStrip.getChildCount(); i++) {
