@@ -1,0 +1,7 @@
+textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+
+   if(CodeCheckBox.isChecked()){
+         CodeEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());//顯示密碼
+         }else{
+         CodeEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());  //隱藏密碼
+         }

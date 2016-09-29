@@ -1,7 +1,9 @@
-package com.awant.lion.tools;
+package basic.connect;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -13,6 +15,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.apache.http.util.ExceptionUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -26,17 +29,50 @@ import java.io.Reader;
 public class HttpGetPost extends AsyncTask<Void, Void, Object> {
     String url;
     HttpType httpType;
-    Class<?> bundleClass;
+    //    Class<?> bundleClass;
     HttpGet httpGet = null;
     HttpPost httpPost = null;
     ProgressDialog progressDialog;
 
+    Class<?> entity;
+
+    final int KEY_SHOW = 100;
+    final int KEY_CLOSE = 99;
+
     public enum HttpType {GET, POST}
 
-    public HttpGetPost(String url, Class<?> bundleClass, HttpType httpType) {
+    public HttpGetPost(String url, Class<?> entity, HttpType httpType) {
         this.url = url;
         this.httpType = httpType;
-        this.bundleClass = bundleClass;
+        this.entity = entity;
+        initHandler();
+    }
+
+    private void initHandler() {
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case KEY_SHOW:
+                        try {
+                            if (progressDialog != null) progressDialog.show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case KEY_CLOSE:
+                        try {
+                            if (progressDialog != null && progressDialog.isShowing()) {
+                                progressDialog.dismiss();
+                                progressDialog = null;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                }
+            }
+        };
     }
 
     public void setProgressDialog(ProgressDialog progressDialog) {
@@ -46,7 +82,7 @@ public class HttpGetPost extends AsyncTask<Void, Void, Object> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        if (progressDialog != null) progressDialog.show();
+        handler.sendEmptyMessage(KEY_SHOW);
     }
 
     @Override
@@ -59,17 +95,25 @@ public class HttpGetPost extends AsyncTask<Void, Void, Object> {
             if (httpEntity == null) return null;
             String result = EntityUtils.toString(httpEntity);
             is = new ByteArrayInputStream(result.getBytes("UTF-8"));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return null;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
 
         try {
             Reader reader = new InputStreamReader(is, "UTF-8");
             Gson gson = new GsonBuilder().create();
-            object = gson.fromJson(reader, bundleClass);
+            object = gson.fromJson(reader, entity);
             is.close();
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
 
         afterGson(object);
@@ -104,15 +148,18 @@ public class HttpGetPost extends AsyncTask<Void, Void, Object> {
 
     public void afterGson(Object object) {
     }
-    public void afterPostExecute(Object o){};
+
+    public void afterPostExecute(Object o) {
+    }
+
 
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-            progressDialog = null;
-        }
+        handler.sendEmptyMessage(KEY_CLOSE);
+
         afterPostExecute(o);
     }
+
+    Handler handler;
 }

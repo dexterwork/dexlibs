@@ -202,6 +202,21 @@ public class Tools {
         context.startActivity(intent);
     }
 	
+	/**
+	*解鎖讓螢幕可以翻轉
+	*/
+	public void unlockOrientation() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+    }
+
+	/**
+	*讓螢幕不可以翻轉
+	*/
+    public void lockOrientationPortrait() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+	
 	  /**
      * 回傳螢幕目前是否為水平橫式
      * @return
@@ -249,5 +264,49 @@ public class Tools {
             e.printStackTrace();
         }
         return stringEncoded;
+    }
+	
+	 /**
+     * 檢查版本 (format: 1.0.0)
+     *
+     * @param deviceVersion 裝置上的版本
+     * @param newVersion    線上版本
+     * @return 若與線上版本相同則回傳 true
+     */
+    public boolean checkVersion(String deviceVersion, String newVersion) {
+        int[] dVers = convertStringArrayToIntegerArray(deviceVersion.split("\\."));
+        int[] sVers = convertStringArrayToIntegerArray(newVersion.split("\\."));
+
+        if (dVers == null) return false;
+        if (sVers == null) return false;
+        if (dVers.length == 0 || sVers.length == 0) return false;
+        if (dVers.length != sVers.length) return false;
+
+        for (int i = 0; i < dVers.length; i++) {
+            MLog.d(this, "dexter sVer=" + sVers[i] + "/dVer=" + dVers[i]);
+        }
+        for (int i = 0; i < sVers.length; i++) {
+            if (sVers[i] > dVers[i]) return false;
+            if (i == sVers.length - 1) break;
+            if (sVers[i] < dVers[i]) return true;
+        }
+        return true;
+    }
+
+    public boolean checkVersion(Context context, String newVersion) {
+        return checkVersion(getVersionName(context), newVersion);
+    }
+
+    public int[] convertStringArrayToIntegerArray(String[] strArray) {
+        if (strArray == null) return null;
+        int[] nArray = new int[strArray.length];
+        try {
+            for (int i = 0; i < strArray.length; i++) {
+                nArray[i] = Integer.parseInt(strArray[i]);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return nArray;
     }
 }

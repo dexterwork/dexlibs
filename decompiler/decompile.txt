@@ -1,0 +1,15 @@
+
+
+step 1 : unzip apk
+
+step 2 :
+http://code.google.com/p/dex2jar/downloads/list (如果下方連結失效)
+https://sourceforge.net/projects/dex2jar/?source=typ_redirect <-- download dex2jar
+
+step 3 :
+unzip apk 出來的 classes.dex 放到 dex2jar資料夾中, cmd: d2j-dex2jar.bat classes.dex
+然後產生 xxx.jar
+
+step 4 :
+jd-gui去讀取 xxx.jar
+download:  http://jd.benow.ca/
