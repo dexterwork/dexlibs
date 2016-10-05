@@ -1,5 +1,6 @@
 package com.twgood.skytv_test.basic;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,16 +12,16 @@ import android.view.Window;
 
 public abstract class BasicDialog extends Dialog {
     protected int dialogId;
-    protected BasicActivity activity;
+    protected Activity activity;
 
-    public BasicDialog(BasicActivity activity) {
+    public BasicDialog(Activity activity) {
         super(activity);
         this.activity = activity;
         init();
         setContentView(getCustomLayoutResId());
     }
 
-    public BasicDialog(BasicActivity activity, int dialogId) {
+    public BasicDialog(Activity activity, int dialogId) {
         this(activity);
         this.dialogId = dialogId;
     }
