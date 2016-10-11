@@ -296,6 +296,15 @@ public class Tools {
     public boolean checkVersion(Context context, String newVersion) {
         return checkVersion(getVersionName(context), newVersion);
     }
+	
+	 public String getVersionName(Context context) {
+        try {
+            return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public int[] convertStringArrayToIntegerArray(String[] strArray) {
         if (strArray == null) return null;
