@@ -1,4 +1,4 @@
-package com.awant.lion.tools;
+﻿package com.awant.lion.tools;
 
 import android.content.Context;
 
@@ -317,5 +317,19 @@ public class Tools {
             e.printStackTrace();
         }
         return nArray;
+    }
+
+    public boolean checkFocused(View view) {
+        if (view.isFocused())
+            return true;
+
+        if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                if (checkFocused(viewGroup.getChildAt(i)))
+                    return true;
+            }
+        }
+        return false;
     }
 }
