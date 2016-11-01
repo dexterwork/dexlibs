@@ -1,0 +1,30 @@
+ registerReceiver(networkStateReceiver = new NetworkStateReceiver(new NetworkStateReceiver.NetworkListener() {
+            @Override
+            public void onNetworkChange(NetworkInfo info) {
+               setNetworkState(info);
+
+            }
+        }), new IntentFilter(RECEIVER_NETWORK));
+		
+ public static final String RECEIVER_NETWORK = "android.net.conn.CONNECTIVITY_CHANGE";		
+		
+ public void setNetworkState(NetworkInfo info) {
+
+        if (info != null && info.getState() == NetworkInfo.State.CONNECTED) {
+            int type = info.getType();
+            switch (type) {
+                case ConnectivityManager.TYPE_WIFI:
+                    //TODO
+                    break;
+                case ConnectivityManager.TYPE_ETHERNET:
+                    //TODO
+                    break;
+            }
+            return;
+        }
+
+    }
+	
+	
+	 <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
