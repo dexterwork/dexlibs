@@ -332,4 +332,16 @@ public class Tools {
         }
         return false;
     }
+	
+	
+    /**
+     * 播打電話
+     * @param activity
+     * @param phoneNumber
+     */
+    public void callPhone(Activity activity,String phoneNumber){
+        Uri uri = Uri.parse("tel:"+phoneNumber);
+        Intent it = new Intent(Intent.ACTION_DIAL, uri);
+        activity.startActivity(it);
+    }
 }
