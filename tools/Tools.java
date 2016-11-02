@@ -11,6 +11,16 @@ import java.io.InputStreamReader;
  * Created by dexter on 2015/6/17.
  */
 public class Tools {
+	
+	//打開WIFI設定頁
+	    public void openWifiSetting() {
+        Intent intent = new Intent(Intent.ACTION_MAIN, null);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        ComponentName cn = new ComponentName("com.android.settings", "com.android.settings.wifi.WifiSettings");
+        intent.setComponent(cn);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(intent);
+    }
 
 
    public static String getDeviceId(Context context) {
