@@ -383,4 +383,20 @@ public class Tools {
 
         return mBitmap;
     }
+	
+	 /**
+     * dp to px
+     * @param dp
+     * @param activity
+     * @return
+     */
+    public float convertDpToPixel(float dp, Activity activity) {
+        float px = dp * getDensity(activity);
+        return px;
+    }
+
+    public float getDensity(Activity activity) {
+        DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
+        return metrics.density;
+    }
 }
