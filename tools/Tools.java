@@ -399,4 +399,25 @@ public class Tools {
         DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
         return metrics.density;
     }
+	
+	
+	/**
+
+ * 判斷當前設備是手機還是平板，代碼來自 Google I/O App for Android
+
+ * @param context
+
+ * @return 平板返回 True，手機返回 False
+
+ */
+
+public static boolean isPad(Context context) {
+
+    return (context.getResources().getConfiguration().screenLayout
+
+            & Configuration.SCREENLAYOUT_SIZE_MASK) 
+
+            >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+
+}
 }
