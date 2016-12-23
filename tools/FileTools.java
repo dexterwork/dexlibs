@@ -181,6 +181,26 @@ public class FileTools {
         }
         return read;
     }
-
+  /**
+     * 
+     * @param context
+     * @param path as "my_folder/a01.txt"
+     * @return
+     */
+    public static String readTxt(Context context, String path) {
+        String str = "";
+        try {
+            StringBuilder buf = new StringBuilder();
+            InputStream json = context.getAssets().open(path);
+            BufferedReader in = new BufferedReader(new InputStreamReader(json, "UTF-8"));
+            while ((str = in.readLine()) != null) {
+                buf.append(str);
+            }
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
 
 }

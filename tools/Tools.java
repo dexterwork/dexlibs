@@ -12,6 +12,8 @@ import java.io.InputStreamReader;
  */
 public class Tools {
 	
+	URLEncoder.encode(url, "UTF-8");
+	
 	//打開WIFI設定頁
 	    public void openWifiSetting() {
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
