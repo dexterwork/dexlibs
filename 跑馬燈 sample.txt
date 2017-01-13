@@ -9,6 +9,8 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:singleLine="true"/>
+	
+	**如果是在 adapter 裡, 不要加上 android:focusable="true"
 						
 						
 並在程式碼裡在 setText() 後, 加上 
