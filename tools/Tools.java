@@ -89,7 +89,18 @@ public class Tools {
             }
         }
     }
-
+	
+	
+	  public void toGooglePlay(Activity activity){
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("market://details?id=" + activity.getPackageName()));
+            activity. startActivity(intent);
+        }catch (Exception e){
+            String url = "https://play.google.com/store/apps/details?id="+ activity.getPackageName();
+            new Tools().openUrlPage(activity,url);
+        }
+    }
 
     public boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
