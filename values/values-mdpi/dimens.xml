@@ -1,0 +1,22 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="qr_code_size">240dp</dimen>
+
+    <dimen name="payment_title_width">120dp</dimen>
+
+    <dimen name="navigation_width">280dp</dimen>
+
+    <dimen name="video_height">240dp</dimen>
+
+    <dimen name="text_size_normal">20sp</dimen>
+    <dimen name="text_size_small">16sp</dimen>
+    <dimen name="text_size_large">22sp</dimen>
+
+    <dimen name="pro_card_width">280dp</dimen>
+
+    <dimen name="dp_140">140dp</dimen>
+    <dimen name="dp_22">22dp</dimen>
+    <dimen name="dp_16">16dp</dimen>
+    <dimen name="dp_12">12dp</dimen>
+    <dimen name="shadow">14dp</dimen>
+</resources>
