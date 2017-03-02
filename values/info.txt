@@ -1,2 +1,4 @@
-不同解析度用
+dimens - 不同解析度用 
 https://developer.android.com/guide/practices/screens_support.html
+
+ids - 自訂增加元件的 id

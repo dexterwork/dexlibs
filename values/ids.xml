@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="radio_button_first" type="id"/>
+    <item name="radio_button_first_net_atm" type="id"/>
+
+</resources>
