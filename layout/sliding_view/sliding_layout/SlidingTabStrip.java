@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.twgood.android.objects.sliding_layout;
+package com.skyking.televant.sliding_layout;
 
 import android.R;
 import android.content.Context;
@@ -30,7 +30,7 @@ class SlidingTabStrip extends LinearLayout {
 
     private static final int DEFAULT_BOTTOM_BORDER_THICKNESS_DIPS = 2;
     private static final byte DEFAULT_BOTTOM_BORDER_COLOR_ALPHA = 0x26;
-    private int indicatorHeightDip = 8;
+    private int indicatorHeightDip = 6;
     private static final int DEFAULT_SELECTED_INDICATOR_COLOR = 0xFF33B5E5;
 
     private static final int DEFAULT_DIVIDER_THICKNESS_DIPS = 1;
@@ -40,7 +40,7 @@ class SlidingTabStrip extends LinearLayout {
     private final int mBottomBorderThickness;
     private final Paint mBottomBorderPaint;
 
-    private final int mSelectedIndicatorThickness;
+    private  int mSelectedIndicatorThickness;
     private final Paint mSelectedIndicatorPaint;
 
     private final int mDefaultBottomBorderColor;
@@ -95,6 +95,8 @@ class SlidingTabStrip extends LinearLayout {
      */
     public void setIndicatorHeightDip(int indicatorHeightDip) {
         this.indicatorHeightDip = indicatorHeightDip;
+        float density = getResources().getDisplayMetrics().density;
+        mSelectedIndicatorThickness = (int) (indicatorHeightDip * density);
     }
 
     void setCustomTabColorizer(SlidingTabLayout.TabColorizer customTabColorizer) {
