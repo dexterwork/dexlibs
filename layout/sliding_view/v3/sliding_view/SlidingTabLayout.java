@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.twgood.android.objects.sliding_layout;
+package com.skyking.televant.sliding_layout;
 
 import android.content.Context;
 import android.content.res.Configuration;

@@ -1,8 +1,11 @@
-package com.twgood.studio.objects.sliding_layout;
+package com.skyking.televant.sliding_layout;
 
 import android.graphics.Color;
+import android.view.View;
 
-import com.twgood.studio.basic.BasicFragment;
+import com.skyking.televant.R;
+import com.skyking.televant.basic.BasicFragment;
+
 
 /**
  * Created by SkykingAndroid on 2016/9/19.
@@ -15,6 +18,13 @@ public abstract class SlidingTabFragment extends BasicFragment {
     private int indicatorColor = Color.BLUE;
     private int dividerColor = Color.GRAY;
 
+
+    @Override
+    protected void initView(View view) {
+        setDividerColor(Color.TRANSPARENT);
+        setIndicatorColor(getResources().getColor(R.color.sliding_indicator));
+        initLayout(view);
+    }
 
     public String getTitle() {
         return title;
@@ -34,4 +44,6 @@ public abstract class SlidingTabFragment extends BasicFragment {
     public void setDividerColor(int dividerColor) {
         this.dividerColor = dividerColor;
     }
+
+    public abstract void initLayout(View view);
 }

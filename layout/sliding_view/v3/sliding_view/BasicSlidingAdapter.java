@@ -1,11 +1,12 @@
-package com.twgood.studio.objects.sliding_layout;
+package com.skyking.televant.sliding_layout;
 
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.twgood.studio.basic.BasicActivity;
+import com.skyking.televant.basic.BasicActivity;
+
 
 /**
  * Created by SkykingAndroid on 2016/9/19.

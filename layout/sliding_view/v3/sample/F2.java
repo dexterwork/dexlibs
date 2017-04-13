@@ -1,4 +1,4 @@
-package com.skyking.televant.test;
+package com.skyking.televant.sliding_layout.sample;
 
 import android.view.View;
 import android.widget.TextView;
@@ -10,17 +10,17 @@ import com.skyking.televant.sliding_layout.SlidingTabFragment;
  * Created by SkykingAndroid on 2017/4/13.
  */
 
-public class F1 extends SlidingTabFragment {
+public class F2 extends SlidingTabFragment {
 
-    public static F1 getInstance(){
-        F1 f=new F1();
-        f.setTitle("F1");
+    public static F2 getInstance(){
+        F2 f=new F2();
+        f.setTitle("F2");
         return f;
     }
 
     @Override
     public void initLayout(View view) {
-        ((TextView)view.findViewById(R.id.tvName)).setText("F1");
+        ((TextView)view.findViewById(R.id.tvName)).setText("F2");
     }
 
 
