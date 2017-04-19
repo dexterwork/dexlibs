@@ -1,0 +1,30 @@
+ @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+
+        super.onConfigurationChanged(newConfig);
+        if (lastConfig.orientation != newConfig.orientation) {
+            lastConfig.orientation = newConfig.orientation;
+        }
+
+
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            panel.setVisibility(View.GONE);
+            DisplayMetrics display1 = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(display1);
+            mainContainer.getLayoutParams().height = display1.heightPixels;
+
+            videoView.setDimensions(display1.widthPixels, display1.heightPixels);
+            videoView.getHolder().setFixedSize(display1.heightPixels, display1.widthPixels);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            actionbar.setVisibility(View.GONE);
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            DisplayMetrics display = this.getResources().getDisplayMetrics();
+            mainContainer.getLayoutParams().height = videoOriginHeight;
+            videoView.setDimensions(display.widthPixels, Math.round(display.widthPixels / 16 * 9));
+            videoView.getHolder().setFixedSize(display.widthPixels, Math.round(display.widthPixels / 16 * 9));
+            panel.setVisibility(View.VISIBLE);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            actionbar.setVisibility(View.VISIBLE);
+        }
+
+    }
