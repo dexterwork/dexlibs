@@ -1,4 +1,4 @@
-package permission;
+package dexter.studio.dexlib.permission;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -13,15 +13,16 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
-import dexter.studio.upro.R;
+import dexter.studio.dexlib.R;
+
 
 /**
  * Created by Dexter on 2016/8/9.
  */
 public class PermissionsActivity extends AppCompatActivity {
 
-    public static final int PERMISSIONS_GRANTED = 0; // 权限授权
-    public static final int PERMISSIONS_DENIED = 1; // 权限拒绝
+//    public static final int PERMISSIONS_GRANTED = 0; // 权限授权
+//    public static final int PERMISSIONS_DENIED = 1; // 权限拒绝
 
     private static final int PERMISSION_REQUEST_CODE = 0; // 系统权限管理页面的参数
     private static final String EXTRA_PERMISSIONS =
@@ -38,18 +39,21 @@ public class PermissionsActivity extends AppCompatActivity {
         ActivityCompat.startActivityForResult(activity, intent, requestCode, null);
     }
 
-    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getIntent() == null || !getIntent().hasExtra(EXTRA_PERMISSIONS)) {
             throw new RuntimeException("PermissionsActivity需要使用静态startActivityForResult方法启动!");
         }
-        setContentView(R.layout.activity_permissions);
+        setContentView(R.layout.activity_permission);
 
         mChecker = new PermissionsChecker(this);
         isRequireCheck = true;
     }
 
-    @Override protected void onResume() {
+
+    @Override
+    protected void onResume() {
         super.onResume();
         if (isRequireCheck) {
             String[] permissions = getPermissions();
@@ -75,7 +79,8 @@ public class PermissionsActivity extends AppCompatActivity {
 
     // 全部权限均已获取
     private void allPermissionsGranted() {
-        setResult(PERMISSIONS_GRANTED);
+//        setResult(PERMISSIONS_GRANTED);
+        if(permissionListener!=null)permissionListener.onPass();
         finish();
     }
 
@@ -117,14 +122,17 @@ public class PermissionsActivity extends AppCompatActivity {
 
         // 拒绝, 退出应用
         builder.setNegativeButton("拒絕", new DialogInterface.OnClickListener() {
-            @Override public void onClick(DialogInterface dialog, int which) {
-                setResult(PERMISSIONS_DENIED);
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+//                setResult(PERMISSIONS_DENIED);
+                if(permissionListener!=null)permissionListener.onDeny();
                 finish();
             }
         });
 
         builder.setPositiveButton("設定", new DialogInterface.OnClickListener() {
-            @Override public void onClick(DialogInterface dialog, int which) {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
                 startAppSettings();
             }
         });
@@ -137,5 +145,14 @@ public class PermissionsActivity extends AppCompatActivity {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.parse(PACKAGE_URL_SCHEME + getPackageName()));
         startActivity(intent);
+    }
+
+    public static PermissionListener permissionListener;
+
+
+    public interface PermissionListener {
+        void onPass();
+
+        void onDeny();
     }
 }

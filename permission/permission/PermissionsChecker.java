@@ -1,4 +1,4 @@
-package permission;
+package dexter.studio.dexlib.permission;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
