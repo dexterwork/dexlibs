@@ -77,4 +77,31 @@ public abstract class BasicActivity extends ActionBarActivity implements Navigat
     public void onBackPressed() {
         fragmentMaster.back();
     }
+	
+	 View decorView;
+    final int HIDE_NAVIGATION_BAR_FLAG = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+
+    public void hideNavigationBar() {
+
+        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentApiVersion < Build.VERSION_CODES.KITKAT) return;
+        if (decorView == null) decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(HIDE_NAVIGATION_BAR_FLAG);
+        decorView.setOnSystemUiVisibilityChangeListener
+                (new View.OnSystemUiVisibilityChangeListener() {
+                    @Override
+                    public void onSystemUiVisibilityChange(int visibility) {
+                        if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                            decorView.setSystemUiVisibility(HIDE_NAVIGATION_BAR_FLAG);
+                        } else {
+                        }
+                    }
+                });
+    }
+
 }
