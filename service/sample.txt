@@ -1,0 +1,27 @@
+
+
+//   manifest -----------
+
+  <service
+            android:name=".AudioService"
+            android:enabled="true"/>
+			
+			
+			
+    private void notificatonCancel() {
+        Intent intent = new Intent(activity, AudioService.class);
+        intent.setAction(AudioService.CLOSE_NOTIFICATION);
+        PendingIntent pIntent = PendingIntent.getService(activity, 0, intent, 0);
+        try {
+            pIntent.send();
+        } catch (PendingIntent.CanceledException e) {
+            e.printStackTrace();
+        }
+    }
+	
+	 Intent intent = new Intent(MainActivity.this, NickyService.class);
+            startService(intent);
+			
+			
+			  Intent intent = new Intent(MainActivity.this, NickyService.class);
+            stopService(intent);
