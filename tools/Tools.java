@@ -192,7 +192,19 @@ public class Tools {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dbSize * scale + 0.5f);
     }
-	
+	public static float convertDpToPixel(float dp, Context context){
+        float px = dp * getDensity(context);
+        return px;
+    }
+
+    public static float convertPixelToDp(float px, Context context){
+        float dp = px / getDensity(context);
+        return dp;
+    }
+    public static float getDensity(Context context){
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        return metrics.density;
+    }
 	
 	public int getVersionCode(Context context) {
         try {
