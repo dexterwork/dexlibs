@@ -12,6 +12,17 @@ import java.io.InputStreamReader;
  */
 public class Tools {
 	
+	
+    public static void toGooglePlay(Context context){
+        final String appPackageName = context.getPackageName(); // getPackageName() from Context or Activity object
+        try {
+            context. startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            context. startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
+    }
+	
+	
 	URLEncoder.encode(url, "UTF-8");
 	
 	//打開WIFI設定頁
