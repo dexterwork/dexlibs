@@ -40,6 +40,16 @@ public class ScreenTools {
     public boolean isLandscape() {
         return activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
+	
+	
+    /**
+     * 取得系統螢幕是否可翻轉(最外部設定)
+     * @param context
+     * @return
+     */
+    protected boolean isSystemScreenRotationAuto(Context context) {
+        return android.provider.Settings.System.getInt(context.getContentResolver(), android.provider.Settings.System.ACCELEROMETER_ROTATION, 0) == 1;
+    }
 
     private int screenHeight;
     private int screenWidth;
