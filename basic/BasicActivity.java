@@ -103,5 +103,63 @@ public abstract class BasicActivity extends ActionBarActivity implements Navigat
                     }
                 });
     }
+	
+	
+	 private static final int PERMISSION_REQUEST_CODE = 10; // 系统权限管理页面的参数
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE && hasAllPermissionsGranted(grantResults)) {
+            onPermissionPass();
+        } else {
+            onPermissionDeny();
+        }
+    }
+
+    protected void onPermissionDeny() {
+    }
+
+
+    protected void onPermissionPass() {
+    }
+
+
+    public void checkPermissions(String... permissions) {
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PackageManager pm = getPackageManager();
+
+            for (String permission : permissions) {
+                if (pm.checkPermission(permission, getPackageName()) == PackageManager.PERMISSION_DENIED) {
+                    requestPermissions(permissions, PERMISSION_REQUEST_CODE);
+//                    ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CODE);
+                    return;
+                }
+            }
+        }
+        onPermissionPass();
+    }
+
+
+    // 判断是否缺少权限
+    public boolean lacksPermission(String permission) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED;
+        }
+        return true;
+    }
+
+    // 含有全部的权限
+    public boolean hasAllPermissionsGranted(@NonNull int[] grantResults) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            for (int grantResult : grantResults) {
+                if (grantResult == PackageManager.PERMISSION_DENIED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
 }
