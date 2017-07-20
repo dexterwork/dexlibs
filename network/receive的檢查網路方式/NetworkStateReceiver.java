@@ -38,10 +38,19 @@ public abstract class NetworkStateReceiver extends BroadcastReceiver {
         }
         if (intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY, Boolean.FALSE)) {
 //            MLog.d("NetworkStateReceiver", "There's no network connectivity");
-            onNetworkChange(null, false);
+            onNetworkChange(null,false);
         }
     }
 
 
     public abstract void onNetworkChange(NetworkInfo networkInfo, boolean isConnect);
+
+    public boolean isConnectedInternet(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        }
+        return false;
+    }
 }
