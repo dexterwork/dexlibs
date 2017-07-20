@@ -11,16 +11,12 @@ import android.net.NetworkInfo;
  * Created by SkykingAndroid on 2016/10/4.
  */
 
-public class NetworkStateReceiver extends BroadcastReceiver {
+public abstract class NetworkStateReceiver extends BroadcastReceiver {
 
-    NetworkListener networkListener;
 
     public static final String RECEIVER_NAME = "android.net.conn.CONNECTIVITY_CHANGE";
 
 
-    public NetworkStateReceiver(NetworkListener networkListener) {
-        this.networkListener = networkListener;
-    }
 
     public void register(Context context) {
         context.registerReceiver(this, new IntentFilter(RECEIVER_NAME));
@@ -32,7 +28,7 @@ public class NetworkStateReceiver extends BroadcastReceiver {
 //        MLog.d("NetworkStateReceiver","Network connectivity change");
         if (intent.getExtras() != null) {
             NetworkInfo ni = (NetworkInfo) intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);
-            networkListener.onNetworkChange(ni, ni != null && ni.getState() == NetworkInfo.State.CONNECTED);
+            onNetworkChange(ni, ni != null && ni.getState() == NetworkInfo.State.CONNECTED);
 
 
 //            if (ni != null && ni.getState() == NetworkInfo.State.CONNECTED) {
@@ -42,11 +38,10 @@ public class NetworkStateReceiver extends BroadcastReceiver {
         }
         if (intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY, Boolean.FALSE)) {
 //            MLog.d("NetworkStateReceiver", "There's no network connectivity");
-            networkListener.onNetworkChange(null, false);
+            onNetworkChange(null, false);
         }
     }
 
-    public interface NetworkListener {
-        void onNetworkChange(NetworkInfo networkInfo, boolean isConnect);
-    }
+
+    public abstract void onNetworkChange(NetworkInfo networkInfo, boolean isConnect);
 }
