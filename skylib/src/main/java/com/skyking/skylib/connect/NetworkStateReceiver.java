@@ -1,4 +1,4 @@
-package com.skyking.skykingradio;
+package com.skyking.skylib.connect;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -45,7 +45,7 @@ public abstract class NetworkStateReceiver extends BroadcastReceiver {
 
     public abstract void onNetworkChange(NetworkInfo networkInfo, boolean isConnect);
 
-    public boolean isConnectedInternet(Context context) {
+    public static boolean isConnectedInternet(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {

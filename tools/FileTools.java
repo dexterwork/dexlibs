@@ -33,8 +33,12 @@ public class FileTools {
     }
 
     public String getSDcardPath() {
-        return Environment.getExternalStorageDirectory().getAbsolutePath().toString() + "/";
+        return Environment.getExternalStorageDirectory().getAbsolutePath().toString() + File.separator;
     }
+	
+	public String getPackageFolder(Context context){
+		return context.getFilesDir().getPath() + File.separator;
+	}
 
 
     /**
