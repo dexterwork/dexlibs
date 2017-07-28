@@ -1,0 +1,2 @@
+C:\Users\Dexter>adb -s emulator-5554 pull /sdcard/dexterliu.studio.imoney/money_
+db.sqlite f:\AndroidStudioProjects\imoney
