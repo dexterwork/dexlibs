@@ -11,20 +11,13 @@ import android.view.Window;
  */
 
 public abstract class BasicDialog extends Dialog {
-    protected int dialogId;
-    protected Context context;
 
     public BasicDialog(Context context) {
         super(context);
-        this.context = context;
         init();
         setContentView(getCustomLayoutResId());
     }
 
-    public BasicDialog(Context context, int dialogId) {
-        this(context);
-        this.dialogId = dialogId;
-    }
 
     @Override
     public void show() {
@@ -43,7 +36,4 @@ public abstract class BasicDialog extends Dialog {
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    public int getDialogId() {
-        return dialogId;
-    }
 }

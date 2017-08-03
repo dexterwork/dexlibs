@@ -1,9 +1,11 @@
-package com.kingspirit.android.tools;
+package dexterliu.studio.dexlibs.tools;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 /**
  * Update by Dexter on 2016/9/5.
@@ -40,10 +42,11 @@ public class ScreenTools {
     public boolean isLandscape() {
         return activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
-	
-	
+
+
     /**
      * 取得系統螢幕是否可翻轉(最外部設定)
+     *
      * @param context
      * @return
      */
@@ -60,6 +63,32 @@ public class ScreenTools {
         activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
         this.screenHeight = metrics.heightPixels;
         this.screenWidth = metrics.widthPixels;
+    }
+
+    /**
+     * 取得螢幕寬(像素)
+     *
+     * @return
+     */
+    public static int getScreenWidth(Context context) {
+        WindowManager wm = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(outMetrics);
+        return outMetrics.widthPixels;
+    }
+
+    /**
+     * 取得螢幕高(像素)
+     *
+     * @return
+     */
+    public static int getScreenHeight(Context context) {
+        WindowManager wm = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(outMetrics);
+        return outMetrics.heightPixels;
     }
 
     /**

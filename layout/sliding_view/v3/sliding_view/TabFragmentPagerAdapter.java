@@ -33,4 +33,16 @@ public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         return list.get(position).getTitle();
     }
+	
+	  @Override
+    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+        super.setPrimaryItem(container, position, object);
+        this.currentPosition = position;
+        if (object instanceof BasicFragment) {
+            this.currentFragment = (BasicFragment) object;
+        }
+    }
+
+    public int currentPosition;
+    public BasicFragment currentFragment;
 }
