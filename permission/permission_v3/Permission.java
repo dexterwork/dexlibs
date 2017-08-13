@@ -19,7 +19,6 @@ public class Permission {
     public static boolean check(BasicActivity activity, String permission, PermissionReceiver receiver) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int per1 = ContextCompat.checkSelfPermission(activity, permission);
-            MLog.w("PER", "per=" + per1);
             if (per1 != PackageManager.PERMISSION_GRANTED) {
                 activity.permissionReceiver = receiver;
                 receiver.register(activity);
