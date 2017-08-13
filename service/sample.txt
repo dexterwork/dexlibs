@@ -25,3 +25,11 @@
 			
 			  Intent intent = new Intent(MainActivity.this, NickyService.class);
             stopService(intent);
+			
+			
+			
+			//背景運作, 都不會被回收
+			  startForeground(NotificationMusicControl2.ID, notificationMusicControl.notification);
+			  
+			  //取消背景運作
+			   stopForeground(false);
