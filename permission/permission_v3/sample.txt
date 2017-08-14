@@ -1,0 +1,35 @@
+ new PermissionReceiver() {
+            @Override
+            public void onPass() {
+                start();
+            }
+
+            @Override
+            public void onDeny() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(IntroActivity.this);
+                builder.setMessage("請開啟所需權限後再重新開啟APP");
+                builder.setPositiveButton(R.string.know, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        System.exit(0);
+                    }
+                });
+                builder.show();
+            }
+        }.check( this, Manifest.permission.READ_PHONE_STATE );
+		
+		
+		
+		//in activity
+		 @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Intent intent = new Intent(PermissionReceiver.RECEIVER_NAME);
+        if (grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            intent.putExtra(PermissionReceiver.KEY, true);
+        } else {
+            intent.putExtra(PermissionReceiver.KEY, false);
+        }
+        sendBroadcast(intent);
+    }
