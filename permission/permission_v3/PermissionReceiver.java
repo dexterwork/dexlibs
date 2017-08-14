@@ -48,7 +48,12 @@ public abstract class PermissionReceiver extends BroadcastReceiver {
         register(activity);
         ActivityCompat.requestPermissions(activity, new String[]{permission}, 0);
     }
-
+	
+	public static boolean checkSelf(Activity activity, String permission){
+        int per = ContextCompat.checkSelfPermission(activity, permission);
+        return per == PackageManager.PERMISSION_GRANTED;
+    }
+	
     public abstract void onPass();
 
     public abstract void onDeny();
