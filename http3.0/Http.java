@@ -1,12 +1,13 @@
-package dexter.studio.dexlib.connect2;
+package com.skyking.aline.connect2;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.Message;
 
-import dexter.studio.dexlib.bundles.BasicBundle;
+import com.skyking.aline.R;
+import com.skyking.play_module.receivers.NetworkStateReceiver;
 
 
 /**
@@ -14,47 +15,55 @@ import dexter.studio.dexlib.bundles.BasicBundle;
  */
 public abstract class Http<T> {
 
-    final String TAG = "Http";
 
     Handler handler;
     Class<T> entity;
-    String url;
 
     Context context;
-    BasicBundle bundle;
+    String url;
 
-    public Http(Context context, String url, BasicBundle bundle, Class<T> entity) {
+    public Http(Context context, String url, Class<T> entity) {
         this.context = context;
         this.url = url;
-        this.bundle=bundle;
         this.entity = entity;
         init();
     }
 
+    AlertDialog networkDialog;
+    NetworkStateReceiver networkStateReceiver;
 
     public void exec() {
-        if (!NetworkStateReceiver.isConnectedInternet(context)) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setCancelable(false);
-            builder.setMessage("請檢查您的網路");
-            builder.setPositiveButton("知道了", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    exec();
-                }
-            });
-            builder.show();
-            return;
-        }
+
+        if(!NetworkStateReceiver.isConnectedInternet(context))return;
+
         handler.sendEmptyMessage(ACT_REQUEST);
     }
 
     final int ACT_REQUEST = 10;
     final int ACT_RESPONSE = 11;
-    T object;
+    Object object;
 
     private void init() {
+        if (networkStateReceiver == null) {
+            networkStateReceiver = new NetworkStateReceiver() {
+                @Override
+                public void onNetworkChange(NetworkInfo networkInfo, boolean isConnect) {
+                    if (!isConnect) {
+                        if (networkDialog == null) {
+                            networkDialog = new AlertDialog.Builder(context).create();
+                            networkDialog.setCancelable(false);
+                            networkDialog.setMessage(context.getString(R.string.check_internet));
+                            networkDialog.show();
+                        }
+                    } else if (networkDialog != null && networkDialog.isShowing()) {
+                        networkDialog.dismiss();
+                        networkDialog = null;
+                        exec();
+                    }
+                }
+            }.register(context);
+        }
+
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -63,16 +72,16 @@ public abstract class Http<T> {
 
                     case ACT_RESPONSE:
                         try {
-                            get( object);
+                            get((T) object);
                         } catch (Exception e) {
                             onError();
                         }
                         break;
                     case ACT_REQUEST:
 
-                        new OkHttp<T>(url,bundle, entity) {
+                        new OkHttp(url, entity) {
                             @Override
-                            protected void onPostExecute(T o) {
+                            protected void onPostExecute(Object o) {
                                 if (o == null) {
                                     onError();
                                 } else {
@@ -81,6 +90,7 @@ public abstract class Http<T> {
                                 }
                             }
                         }.execute();
+
                         break;
                 }
 
@@ -89,20 +99,9 @@ public abstract class Http<T> {
         };
     }
 
-//    public void cancel() {
-//        MLog.w(TAG,"HttpGetPost be cancel");
-//        hgp.cancel(true);
-//    }
 
     public abstract void onError();
 
-//    private ProgressDialog getProgress(String from) {
-//        ProgressDialog dialog = new ProgressDialog(activity);
-//        dialog.setCancelable(false);
-//        String msg = activity.getString(R.string.pls_wait_);
-//        dialog.setMessage(msg);
-//        return dialog;
-//    }
 
     public abstract void get(T t);
 
