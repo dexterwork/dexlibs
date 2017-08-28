@@ -48,18 +48,20 @@ public abstract class Http<T> {
             networkStateReceiver = new NetworkStateReceiver() {
                 @Override
                 public void onNetworkChange(NetworkInfo networkInfo, boolean isConnect) {
-                    if (!isConnect) {
-                        if (networkDialog == null) {
-                            networkDialog = new AlertDialog.Builder(context).create();
-                            networkDialog.setCancelable(false);
-                            networkDialog.setMessage(context.getString(R.string.check_internet));
-                            networkDialog.show();
+                    if(isConnect){
+                        context.unregisterReceiver(networkStateReceiver);
+                        if(networkDialog!=null && networkDialog.isShowing()){
+                            networkDialog.dismiss();
+                            networkDialog=null;
                         }
-                    } else if (networkDialog != null && networkDialog.isShowing()) {
-                        networkDialog.dismiss();
-                        networkDialog = null;
                         exec();
+                    }else if(networkDialog == null){
+                        networkDialog = new AlertDialog.Builder(context).create();
+                        networkDialog.setCancelable(false);
+                        networkDialog.setMessage(context.getString(R.string.check_internet));
+                        networkDialog.show();
                     }
+
                 }
             }.register(context);
         }
