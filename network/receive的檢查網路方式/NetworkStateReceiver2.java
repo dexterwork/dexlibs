@@ -14,7 +14,8 @@ import android.util.Log;
  */
 
 public abstract class NetworkStateReceiver2 extends BroadcastReceiver {
-
+    //    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+//<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
 
     public NetworkStateReceiver2 register(Context context) {
         IntentFilter filter = new IntentFilter();
