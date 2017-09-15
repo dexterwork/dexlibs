@@ -8,7 +8,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.text.TextUtils;
 import android.text.format.Formatter;
+import android.util.Log;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -26,9 +28,53 @@ public abstract class NetworkStateReceiver extends BroadcastReceiver {
 //    public static final String RECEIVER_NAME = "android.net.wifi.WIFI_STATE_CHANGED";
 
 
+    //    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+//<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+
+
+
     public NetworkStateReceiver register(Context context) {
-        context.registerReceiver(this, new IntentFilter(RECEIVER_NAME));
+        IntentFilter filter = new IntentFilter(RECEIVER_NAME);
+        filter.addAction(WifiManager.RSSI_CHANGED_ACTION);
+//        filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+//        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        context.registerReceiver(this, filter);
         return this;
+    }
+
+
+    /**
+     * Wifi 訊號強度 0~4
+     *
+     * @param strength
+     */
+    public abstract void onStrengthChanged(int strength);
+
+    public int getStrength(Context context) {
+        WifiManager wifiManager = (WifiManager) context
+                .getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = wifiManager.getConnectionInfo();
+        if (info.getBSSID() != null) {
+            int strength = WifiManager.calculateSignalLevel(info.getRssi(), 5);
+            // 链接速度
+//			int speed = info.getLinkSpeed();
+//			// 链接速度单位
+//			String units = WifiInfo.LINK_SPEED_UNITS;
+//			// Wifi源名称
+//			String ssid = info.getSSID();
+            return strength;
+        }
+        return 0;
+    }
+
+
+    public static int getWifiLevel(Context context) {
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        int numberOfLevels = 5;
+
+        //return 0 ~ 4
+        return WifiManager.calculateSignalLevel(wifiInfo.getRssi(), numberOfLevels);
     }
 
     //    <uses-permission android:name="android.permission.INTERNET" />
@@ -64,35 +110,43 @@ public abstract class NetworkStateReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 //        MLog.d("NetworkStateReceiver","Network connectivity change");
-
+        if (intent == null) return;
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         boolean isConnect = networkInfo != null && networkInfo.isConnected();
         if (!isConnect) {
             onDisconnect();
         } else {
-            onNetworkChange(networkInfo, networkInfo.getType() == ConnectivityManager.TYPE_WIFI);
+
+            String action = intent.getAction();
+            Log.i(getClass().getSimpleName(), "network action=" + (TextUtils.isEmpty(action)? "":action));
+            boolean isWifi = networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+            switch (action) {
+                case WifiManager.RSSI_CHANGED_ACTION:
+                    if (isWifi) onStrengthChanged(getStrength(context));
+                    break;
+//            case WifiManager.NETWORK_STATE_CHANGED_ACTION:
+//                NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
+//                boolean isConnect = info.getState().equals(NetworkInfo.State.CONNECTED);
+//                if (isConnect) onNetworkStateChanged(info,info.getType() == ConnectivityManager.TYPE_WIFI);
+//                else onDisconnect();
+//                break;
+//            case WifiManager.WIFI_STATE_CHANGED_ACTION:
+//                //WIFI开关
+//                int wifistate = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_DISABLED);
+//                onWifiStateChanged(wifistate == WifiManager.WIFI_STATE_ENABLED);
+//                break;
+                default:
+                    onConnected(networkInfo, isWifi);
+            }
+
         }
 
 
-//        if (intent.getExtras() != null) {
-//            NetworkInfo ni = (NetworkInfo) intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);
-//            onNetworkChange(ni, ni != null && ni.getState() == NetworkInfo.State.CONNECTED);
-//
-//
-////            if (ni != null && ni.getState() == NetworkInfo.State.CONNECTED) {
-//////                MLog.i("NetworkStateReceiver", "Network " + ni.getTypeName() + " connected");
-////
-////            }
-//        }
-//        if (intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY, Boolean.FALSE)) {
-////            MLog.d("NetworkStateReceiver", "There's no network connectivity");
-//            onNetworkChange(null,false);
-//        }
     }
 
 
-    public abstract void onNetworkChange(NetworkInfo networkInfo, boolean isWifi);
+    public abstract void onConnected(NetworkInfo networkInfo, boolean isWifi);
 
     public abstract void onDisconnect();
 
