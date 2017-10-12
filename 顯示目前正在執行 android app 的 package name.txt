@@ -1,0 +1,19 @@
+
+
+顯示目前正在執行 android app 的 package name
+
+adb shell
+
+root@generic_x86:/ # dumpsys window windows | grep -E 'mCurrentFocus'
+
+
+//顯示以下, package name/start activity
+  mCurrentFocus=Window{1e6c9477 u0 com.teamviewer.quicksupport.market/com.teamvi
+ewer.quicksupport.ui.IntroActivity}
+
+
+
+
+
+執行 app
+adb shell am start -n com.package.name/com.package.name.ActivityName
