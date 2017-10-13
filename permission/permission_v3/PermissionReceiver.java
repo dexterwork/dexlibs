@@ -54,6 +54,20 @@ public abstract class PermissionReceiver extends BroadcastReceiver {
         return per == PackageManager.PERMISSION_GRANTED;
     }
 	
+
+//    //in activity
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        Intent intent = new Intent(PermissionReceiver.RECEIVER_NAME);
+//        if (grantResults.length > 0
+//                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//            intent.putExtra(PermissionReceiver.KEY, true);
+//        } else {
+//            intent.putExtra(PermissionReceiver.KEY, false);
+//        }
+//        sendBroadcast(intent);
+//    }
+	
     public abstract void onPass();
 
     public abstract void onDeny();
