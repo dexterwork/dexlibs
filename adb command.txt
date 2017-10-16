@@ -1,0 +1,9 @@
+C:\Users\Dexter>adb -s emulator-5554 pull /sdcard/dexterliu.studio.imoney/money_
+db.sqlite f:\AndroidStudioProjects\imoney
+
+adb connect <ip>
+
+擷圖
+$ adb shell screencap -p /sdcard/screen.png
+$ adb pull /sdcard/screen.png
+$ adb shell rm /sdcard/screen.png
