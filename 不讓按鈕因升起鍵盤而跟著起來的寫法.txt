@@ -1,0 +1,1 @@
+In AndroidManifest.xml, set android:windowSoftInputMode="adjustPan" to your activity.
