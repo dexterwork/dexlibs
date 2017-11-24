@@ -1,1 +1,15 @@
 android
+
+MD5:  E3:F5:DC:BE:28:E6:4C:4A:07:46:E2:C0:F0:98:9F:E0
+SHA1: 05:E4:B3:6E:77:B5:6B:E5:4C:B0:BE:5A:70:23:86:AB:0B:FF:97:DA
+
+
+
+
+debug:
+MD5:  29:82:E5:2F:8D:C1:9D:96:98:D4:8A:31:4D:0A:7C:03
+SHA1: 79:4B:77:06:A5:17:D2:B4:35:55:3C:73:A6:88:59:31:F6:D5:45:A8
+
+
+第一步、打开Android Studio的Terminal工具
+第二步、输入命令：keytool -v -list -keystore keystore文件路径
