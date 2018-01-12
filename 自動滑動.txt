@@ -1,0 +1,29 @@
+
+
+自動滑動
+
+在 res 裡面 建一個package 叫 anim
+<set
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:anim/linear_interpolator"
+    android:fillAfter="true">
+
+    <translate
+        android:fromYDelta="0%p"
+        android:toYDelta="75%p"
+        android:duration="1000"
+        android:repeatCount="0" />
+
+</set>
+
+Animation animBlinkIn_icon = AnimationUtils.loadAnimation(activity, R.anim.move);
+icon.startAnimation(animBlinkIn_icon);
+
+
+/////////////////////////////////
+ObjectAnimator animX = ObjectAnimator.ofFloat(icon, "x",0f);
+                    ObjectAnimator animY = ObjectAnimator.ofFloat(icon, "y", 0f);
+                    AnimatorSet animSetXY = new AnimatorSet();
+                    animSetXY.playTogether(animX, animY);
+                    animSetXY.setDuration(300);
+                    animSetXY.start();
