@@ -1,0 +1,44 @@
+
+AudioManager audioManager;
+    AudioManager.OnAudioFocusChangeListener onAudioFocusChangeListener;
+    //監聽其它任何發出聲音的
+    private void requestFocus() {
+        if (audioManager == null) audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        if (onAudioFocusChangeListener == null) {
+            MLog.d(TAG, "new onAudioFocusChangeListener");
+            onAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+                @Override
+                public void onAudioFocusChange(int focusChange) {
+                    MLog.w(TAG, "AudioManager focusChange=" + focusChange);
+                    switch (focusChange) {
+                        case AudioManager.AUDIOFOCUS_GAIN:
+                            MLog.w(TAG, "AudioManager.AUDIOFOCUS_GAIN");
+                            try {
+                                if (mediaPlayerS != null && mediaPlayerS.isPlaying()) {
+                                    mediaPlayerS.setVolume(1, 1);
+                                }
+                            } catch (IllegalStateException e) {
+                            }
+
+                            break;
+                        case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                            try {
+                                if (mediaPlayerS != null && mediaPlayerS.isPlaying()) {
+                                    mediaPlayerS.setVolume(0, 0);
+                                }
+                            } catch (IllegalStateException e) {
+                            }
+                            break;
+                        case AudioManager.AUDIOFOCUS_LOSS:
+                        case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT://ex ad
+                           stop();
+
+                            break;
+                    }
+                }
+            };
+            audioManager.requestAudioFocus(onAudioFocusChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+        }
+//        int result = audioManager.requestAudioFocus(onAudioFocusChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+//        return result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED;
+    }
