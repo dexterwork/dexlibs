@@ -1,0 +1,21 @@
+  
+  
+  MarqueeTextView 這個元件只能用 new 的, 不要寫在 xml裡
+  這個元件不會因為 adapter.notifyDataSetChanged(); 而影響變成重新 scroll
+  
+  
+  
+		RelativeLayout tvContainer = mainView.findViewById(R.id.tvContainer);
+        tvContainer.removeAllViews();
+
+
+        MarqueeTextView tvMarquee = new MarqueeTextView(getContext());
+        tvMarquee.setText("text");
+        tvMarquee.setTextColor(Color.parseColor("#101010"));
+        tvMarquee.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        tvMarquee.setLayoutParams(params);
+        tvContainer.addView(tvMarquee);
+        tvMarquee.scrollText(12);//數字愈小, scroll速度愈快
