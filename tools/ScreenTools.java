@@ -1,4 +1,4 @@
-package dexterliu.studio.dexlibs.tools;
+package com.twgood.android.tools;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,28 +8,22 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 /**
- * Update by Dexter on 2016/9/5.
+ * Update by Dexter on 2018/1/25.
  */
 public class ScreenTools {
 
-    private Activity activity;
-
-    public ScreenTools(Activity activity) {
-        this.activity = activity;
-        initSize();
-    }
 
     /**
      * 解鎖讓螢幕可以翻轉
      */
-    public void unlockOrientation() {
+    public static void unlockOrientation(Activity activity) {
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 
     /**
      * 讓螢幕不可以翻轉，並且保持直式螢幕
      */
-    public void lockOrientationPortrait() {
+    public static void lockOrientationPortrait(Activity activity) {
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
@@ -39,8 +33,8 @@ public class ScreenTools {
      *
      * @return
      */
-    public boolean isLandscape() {
-        return activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+    public static boolean isLandscape(Context context) {
+        return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
 
@@ -50,20 +44,11 @@ public class ScreenTools {
      * @param context
      * @return
      */
-    protected boolean isSystemScreenRotationAuto(Context context) {
-        return android.provider.Settings.System.getInt(context.getContentResolver(), android.provider.Settings.System.ACCELEROMETER_ROTATION, 0) == 1;
+    protected static boolean isSystemScreenRotationAuto(Context context) {
+        return android.provider.Settings.System.getInt(context.getContentResolver(),
+                android.provider.Settings.System.ACCELEROMETER_ROTATION, 0) == 1;
     }
 
-    private int screenHeight;
-    private int screenWidth;
-
-
-    private void initSize() {
-        DisplayMetrics metrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        this.screenHeight = metrics.heightPixels;
-        this.screenWidth = metrics.widthPixels;
-    }
 
     /**
      * 取得螢幕寬(像素)
@@ -91,31 +76,14 @@ public class ScreenTools {
         return outMetrics.heightPixels;
     }
 
-    /**
-     * 取得螢幕高(像素)
-     *
-     * @return
-     */
-    public int getScreenHeight() {
-        return screenHeight;
-    }
-
-    /**
-     * 取得螢幕寬(像素)
-     *
-     * @return
-     */
-    public int getScreenWidth() {
-        return screenWidth;
-    }
 
     /**
      * 回傳裝置是否為平板
      *
      * @return
      */
-    public boolean isTablet() {
-        return (activity.getResources().getConfiguration().screenLayout
+    public static boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
