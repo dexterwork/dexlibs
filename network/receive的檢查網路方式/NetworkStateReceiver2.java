@@ -95,6 +95,7 @@ public abstract class NetworkStateReceiver2 extends BroadcastReceiver {
         return null;
     }
 
+//	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
     public static String getCountry(Context context){
         TelephonyManager telManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         return telManager.getNetworkCountryIso();
