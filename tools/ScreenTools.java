@@ -87,4 +87,18 @@ public class ScreenTools {
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
+	
+	 /**
+     * hide status bar as full screen.
+     *
+     * @param activity
+     * @param isFullScreen
+     */
+    public static void setFlagFullScreen(Activity activity, boolean isFullScreen) {
+        if (isFullScreen) {
+            activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {
+            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+    }
 }
