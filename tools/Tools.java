@@ -12,6 +12,14 @@ import java.io.InputStreamReader;
  */
 public class Tools {
 	
+	public static void sendCustomerEmail(Activity activity){
+        Intent data=new Intent(Intent.ACTION_SENDTO);
+        data.setData(Uri.parse("mailto:service@skyking.com.tw"));
+        data.putExtra(Intent.EXTRA_SUBJECT, "台灣好客服(Android)");
+//        data.putExtra(Intent.EXTRA_TEXT, "這是內容");
+        activity. startActivity(data);
+    }
+	
 	
     public static void toGooglePlay(Context context){
         final String appPackageName = context.getPackageName(); // getPackageName() from Context or Activity object

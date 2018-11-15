@@ -78,4 +78,59 @@ public abstract class NetworkStateReceiver2 extends BroadcastReceiver {
         }
         return 0;
     }
+	public static String getLocalIpAddress() {
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress()) {
+                        return inetAddress.getHostAddress().toString();
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+//	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    public static String getCountry(Context context){
+        TelephonyManager telManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        return telManager.getNetworkCountryIso();
+    }
+
+    public static void telManager(Context context) {
+//        TelephonyManager telManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+
+// 手機號碼
+//        String lineNumber = telManager.getLine1Number();
+//
+//// 手機 IMEI
+//        String imei = telManager.getDeviceId();
+//
+//// 手機 IMSI
+//        String imsi = telManager.getSubscriberId();
+
+// 手機漫遊狀態
+//        String roamingStatus = telManager.isNetworkRoaming() ? "漫遊中" : "非漫遊";
+
+// 電信網路國別
+//        String country = telManager.getNetworkCountryIso();
+
+// 電信公司代號
+//        String operator = telManager.getNetworkOperator();
+
+// 電信公司名稱
+//        String operatorName = telManager.getNetworkOperatorName();
+
+// 行動網路類型
+//        String[] networkTypeArray = {"UNKNOWN", "GPRS", "EDGE", "UMTS", "CDMA", "EVDO 0", "EVDO A", "1xRTT", "HSDPA", "HSUPA", "HSPA"};
+//        String networkType = networkTypeArray[telManager.getNetworkType()];
+
+// 行動通訊類型
+//        String[] phoneTypeArray = {"NONE", "GSM", "CDMA"};
+//        String phoneType = phoneTypeArray[telManager.getPhoneType()];
+    }
 }
