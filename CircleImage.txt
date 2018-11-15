@@ -1,0 +1,11 @@
+Glide.with(context).load(your url).asBitmap().centerCrop().dontAnimate().placeholder(R.drawable.placeholder_card_view).error(R.drawable.placeholder_card_view).into(new BitmapImageViewTarget(imageView) {
+                @Override
+                protected void setResource(Bitmap resource) {
+				
+				//主要是這一段
+                    RoundedBitmapDrawable circularBitmapDrawable =
+                            RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                    circularBitmapDrawable.setCircular(true);
+                    imageView.setImageDrawable(circularBitmapDrawable);
+                }
+            });
