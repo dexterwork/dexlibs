@@ -75,6 +75,16 @@ public class ScreenTools {
         wm.getDefaultDisplay().getMetrics(outMetrics);
         return outMetrics.heightPixels;
     }
+	
+	public static int[] getScreenSize(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(outMetrics);
+        int[] size = new int[2];
+        size[0] = outMetrics.widthPixels;
+        size[1] = outMetrics.heightPixels;
+        return size;
+    }
 
 
     /**
