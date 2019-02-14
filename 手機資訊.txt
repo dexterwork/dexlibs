@@ -1,0 +1,43 @@
+import android.os.Build;
+ 
+// 主機版名稱
+String board = Build.BOARD;
+ 
+// 品牌名稱
+String brand = Build.BRAND;
+ 
+// CPU + ABI
+String cpu = Build.CPU_ABI;
+ 
+// 設備名稱
+String device = Build.DEVICE;
+ 
+// 版本號碼
+String display = Build.DISPLAY;
+ 
+// 設備識別碼
+String fingerprint = Build.FINGERPRINT;
+ 
+// HOST
+String host = Build.HOST;
+ 
+// 版本號碼
+String id = Build.ID;
+ 
+// 製造商
+String manufacturer = Build.MANUFACTURER;
+ 
+// 模組號碼
+String model = Build.MODEL;
+ 
+// 產品名稱
+String product = Build.PRODUCT;
+ 
+// 設備描述
+String tags = Build.TAGS;
+ 
+// 設備類別; user or eng
+String type = Build.TYPE;
+ 
+// USER
+String user = Build.USER;
