@@ -43,7 +43,7 @@ public abstract class TimeUpdatedReceiver extends BroadcastReceiver {
         }
     }
 
-    byte flag;
+ 
 
     protected abstract void onTimeUpdated();
 
