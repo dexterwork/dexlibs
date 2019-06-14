@@ -481,4 +481,24 @@ public static boolean isPad(Context context) {
             >= Configuration.SCREENLAYOUT_SIZE_LARGE;
 
 }
+
+/**
+     *
+     * @param timeOrDate 格式要和 format 一樣
+     * @param format
+     * @param parseExceptionReturn if parse error return you want.
+     * @return if over time return true.
+     */
+    public static boolean overTime(@NonNull String timeOrDate,@NonNull  String format, boolean parseExceptionReturn) {
+        Calendar cal = Calendar.getInstance();
+        try {
+            cal.setTime(new SimpleDateFormat(format).parse(timeOrDate));
+            if(format.endsWith("d"))cal.add(Calendar.DAY_OF_MONTH,1);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            MLog.e(Tools.class.getSimpleName(), "overTime parse ERROR: " + e.getMessage());
+            return parseExceptionReturn;
+        }
+        return Calendar.getInstance().after(cal);
+    }
 }
