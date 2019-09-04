@@ -1,0 +1,12 @@
+
+
+自訂 switch 顏色的方法
+
+    <Switch
+        android:id="@+id/btnSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#BABABA"
+        android:thumb="@drawable/switch_thumb"   <---
+        android:track="@drawable/switch_track"   <---
+        android:text="Switch" />

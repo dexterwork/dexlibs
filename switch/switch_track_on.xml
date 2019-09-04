@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape android:shape="rectangle"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+
+    <solid android:color="@color/orange_2"/>
+    <corners android:radius="12dp"/>
+    <size android:width="50dp"  />
+
+    <!--用這個, 軌道看起來才會變細-->
+    <stroke android:color="@android:color/transparent" android:width="4dp"/>
+</shape>
