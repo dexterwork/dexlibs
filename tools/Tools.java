@@ -12,6 +12,15 @@ import java.io.InputStreamReader;
  */
 public class Tools {
 	
+	 public static void restartApp(Activity activity){
+        PackageManager pm = activity.getPackageManager();
+        Intent launchIntent = pm.getLaunchIntentForPackage(activity.getPackageName());
+        ComponentName componentname = launchIntent.getComponent();
+        Intent mainIntent = Intent.makeRestartActivityTask(componentname);
+        activity.startActivity(mainIntent);
+        Runtime.getRuntime().exit(0);
+    }
+	
 	public static void sendCustomerEmail(Activity activity){
         Intent data=new Intent(Intent.ACTION_SENDTO);
         data.setData(Uri.parse("mailto:service@skyking.com.tw"));
